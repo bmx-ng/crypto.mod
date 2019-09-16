@@ -69,4 +69,8 @@ Type TMD5DigestRegister Extends TDigestRegister
 		End If
 	End Method
 
+	Method ToString:String()
+		Return "MD5"
+	End Method
+	
 End Type

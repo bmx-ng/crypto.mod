@@ -70,4 +70,8 @@ Type TSHA512DigestRegister Extends TDigestRegister
 		End If
 	End Method
 
+	Method ToString:String()
+		Return "SHA-512"
+	End Method
+
 End Type

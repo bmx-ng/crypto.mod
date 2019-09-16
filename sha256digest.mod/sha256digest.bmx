@@ -70,4 +70,8 @@ Type TSHA256DigestRegister Extends TDigestRegister
 		End If
 	End Method
 
+	Method ToString:String()
+		Return "SHA-256"
+	End Method
+
 End Type

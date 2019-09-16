@@ -30,7 +30,7 @@ Rem
 bbdoc: Gets a digest of the specified @name.
 about: A #TNoSuchAlgorithmException is thrown if the requested digest is not available.
 End Rem
-Function GeTMessageDigest:TMessageDigest(name:String)
+Function GetMessageDigest:TMessageDigest(name:String)
 	Local d:TMessageDigest
 	Local register:TDigestRegister=digest_registry
 
@@ -44,6 +44,26 @@ Function GeTMessageDigest:TMessageDigest(name:String)
 		Throw New TNoSuchAlgorithmException("Digest not available : " + name)
 	End If
 	Return d
+End Function
+
+Rem
+bbdoc: Returns a list of all currently registered digests.
+about: The returned digest names can be used with #GetMessageDigest to get a #TMessageDigest instance.
+End Rem
+Function ListDigests:TArrayList<String>()
+
+	Local list:TArrayLIst<String> = New TArrayList<String>()
+
+	Local register:TDigestRegister=digest_registry
+
+	While register
+		list.Add(register.ToString())
+		register = register._succ
+	Wend
+
+	list.Sort()
+	
+	Return list
 End Function
 
 Rem

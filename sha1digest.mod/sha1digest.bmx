@@ -69,4 +69,8 @@ Type TSHA1DigestRegister Extends TDigestRegister
 		End If
 	End Method
 
+	Method ToString:String()
+		Return "SHA-1"
+	End Method
+
 End Type

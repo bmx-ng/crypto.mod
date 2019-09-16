@@ -22,6 +22,7 @@ SuperStrict
 Import Crypto.libtomcrypt
 Import pub.stdc
 Import brl.stream
+Import brl.collections
 
 Import "source.bmx"
 

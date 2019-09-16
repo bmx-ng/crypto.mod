@@ -106,4 +106,8 @@ Type TCRC32Register Extends TDigestRegister
 		End If
 	End Method
 
+	Method ToString:String()
+		Return "CRC32"
+	End Method
+
 End Type
