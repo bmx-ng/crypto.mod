@@ -111,7 +111,7 @@ Type TCryptoKey
 	Rem
 	bbdoc: Returns a String representation of the key.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(key)
 	End Method
 	
@@ -138,7 +138,7 @@ Type TCryptoHashKey Extends TCryptoKey
 	Rem
 	bbdoc: Retrieves a key from its String representation.
 	End Rem
-	Function FromString:TCryptoHashKey(key:String)
+	Function FromString:TCryptoHashKey(key:String) Override
 		Local hashKey:TCryptoHashKey = New TCryptoHashKey
 		hashKey.key = TBase64.Decode(key)
 
@@ -298,7 +298,7 @@ Type TCryptoSecretBoxKey Extends TCryptoKey
 	Rem
 	bbdoc: Retrieves a key from its String representation.
 	End Rem
-	Function FromString:TCryptoSecretBoxKey(key:String)
+	Function FromString:TCryptoSecretBoxKey(key:String) Override
 		Local sbKey:TCryptoSecretBoxKey = New TCryptoSecretBoxKey
 		sbKey.key = TBase64.Decode(key)
 
@@ -481,7 +481,7 @@ Type TCryptoSignKeyPair
 	Rem
 	bbdoc: Returns a String representation of the key pair.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return PublicKeyToString() + "." + SecretKeyToString()
 	End Method
 	
@@ -562,7 +562,7 @@ Type TCryptoSignature
 	Rem
 	bbdoc: Returns a String representation of the signature.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(signature, 0, EBase64Options.DontBreakLines)
 	End Method
 	
@@ -703,7 +703,7 @@ Type TCryptoExchangeKeyPair
 	Rem
 	bbdoc: Returns a String representation of the key pair.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return PublicKeyToString() + "." + SecretKeyToString()
 	End Method
 	
@@ -797,7 +797,7 @@ Type TCryptoSessionKeyPair
 	Rem
 	bbdoc: Returns a String representation of the key pair.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return RxToString() + "." + TxToString()
 	End Method
 	
@@ -879,7 +879,7 @@ Type TCryptoNPacket
 	Rem
 	bbdoc: Returns a string representation of the packet.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(packet)
 	End Method
 	
@@ -909,7 +909,7 @@ Type TCryptoKK1Packet
 	Rem
 	bbdoc: Returns a string representation of the packet.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(packet)
 	End Method
 	
@@ -939,7 +939,7 @@ Type TCryptoKK2Packet
 	Rem
 	bbdoc: Returns a string representation of the packet.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(packet)
 	End Method
 	
@@ -969,7 +969,7 @@ Type TCryptoXX1Packet
 	Rem
 	bbdoc: Returns a string representation of the packet.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(packet)
 	End Method
 	
@@ -999,7 +999,7 @@ Type TCryptoXX2Packet
 	Rem
 	bbdoc: Returns a string representation of the packet.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(packet)
 	End Method
 	
@@ -1029,7 +1029,7 @@ Type TCryptoXX3Packet
 	Rem
 	bbdoc: Returns a string representation of the packet.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(packet)
 	End Method
 	
@@ -1274,7 +1274,7 @@ Type TCryptoPWHashMasterKey
 	Rem
 	bbdoc: Returns a String representation of the key.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(key)
 	End Method
 	
@@ -1307,7 +1307,7 @@ Type TCryptoPWHashStoredKey
 	Rem
 	bbdoc: Returns a String representation of the key.
 	End Rem
-	Method ToString:String()
+	Method ToString:String() Override
 		Return TBase64.Encode(key, 0, EBase64Options.DontBreakLines)
 	End Method
 	

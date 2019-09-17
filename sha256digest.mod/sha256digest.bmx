@@ -39,14 +39,14 @@ Type TSHA256 Extends TMessageDigest
 		digestPtr = bmx_digest_sha256_init()
 	End Method
 
-	Method OutBytes:Int()
+	Method OutBytes:Int() Override
 		Return 32
 	End Method
 	
 	Rem
 	bbdoc: Updates the hash with @dataLen bytes of data.
 	End Rem
-	Method Update:Int(data:Byte Ptr, dataLen:Int)
+	Method Update:Int(data:Byte Ptr, dataLen:Int) Override
 		Return bmx_digest_sha256_process(digestPtr, data, dataLen)
 	End Method
 	
@@ -54,7 +54,7 @@ Type TSHA256 Extends TMessageDigest
 	bbdoc: Finishes hashing and produces the digest, filling @digest with the hashed bytes.
 	about: The hashing state is reset, ready to create a new digest.
 	End Rem
-	Method Finish:Int(digest:Byte[])
+	Method Finish:Int(digest:Byte[]) Override
 		Assert digest.length >= 32, "Byte array must be at least 32 bytes."
 		Return bmx_digest_sha256_done(digestPtr, digest)
 	End Method
@@ -70,7 +70,7 @@ Type TSHA256DigestRegister Extends TDigestRegister
 		End If
 	End Method
 
-	Method ToString:String()
+	Method ToString:String() Override
 		Return "SHA-256"
 	End Method
 

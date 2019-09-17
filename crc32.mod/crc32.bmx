@@ -39,14 +39,14 @@ Type TCRC32 Extends TMessageDigest
 		digestPtr = bmx_digest_crc32_init()
 	End Method
 
-	Method OutBytes:Int()
+	Method OutBytes:Int() Override
 		Return 4
 	End Method
 	
 	Rem
 	bbdoc: Updates the calculation with @dataLen bytes of data.
 	End Rem
-	Method Update:Int(data:Byte Ptr, dataLen:Int)
+	Method Update:Int(data:Byte Ptr, dataLen:Int) Override
 		bmx_digest_crc32_update(digestPtr, data, dataLen)
 	End Method
 
@@ -83,7 +83,7 @@ Type TCRC32 Extends TMessageDigest
 	bbdoc: Finishes calculation and produces the result, filling @result with the calculated bytes.
 	about: The state is reset, ready to create a new calculation.
 	End Rem
-	Method Finish:Int(result:Byte[])
+	Method Finish:Int(result:Byte[]) Override
 		Assert result.length >= 4, "Byte array must be at least 4 bytes."
 		bmx_digest_crc32_finish(digestPtr, result, 4)
 	End Method
@@ -106,7 +106,7 @@ Type TCRC32Register Extends TDigestRegister
 		End If
 	End Method
 
-	Method ToString:String()
+	Method ToString:String() Override
 		Return "CRC32"
 	End Method
 
