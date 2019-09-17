@@ -77,7 +77,7 @@ Type TNoSuchAlgorithmException Extends TBlitzException
 		Self.message = message
 	End Method
 
-	Method ToString:String()
+	Method ToString:String() Override
 		Return message
 	End Method
 
