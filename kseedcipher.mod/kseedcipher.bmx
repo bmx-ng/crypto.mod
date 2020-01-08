@@ -23,7 +23,7 @@ Rem
 bbdoc: SEED Block Cipher.
 about: The cipher comprises 128-bit blocks and a 128-bit key.
 
-See https://en.wikipedia.org/wiki/SEED
+See <https://en.wikipedia.org/wiki/SEED>
 End Rem
 Module Crypto.KSeedCipher
 

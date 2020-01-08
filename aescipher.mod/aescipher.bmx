@@ -23,7 +23,7 @@ Rem
 bbdoc: AES Cipher
 about: AES is a subset of the Rijndael block cipher.
 
-See https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
+See <https://en.wikipedia.org/wiki/Advanced_Encryption_Standard>
 End Rem
 Module Crypto.AESCipher
 

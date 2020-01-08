@@ -23,7 +23,7 @@ Rem
 bbdoc: NOEKEON Block Cipher.
 about: NOEKEON has a 128-bit block and key size.
 
-See https://en.wikipedia.org/wiki/NOEKEON
+See <https://en.wikipedia.org/wiki/NOEKEON>
 End Rem
 Module Crypto.NoekeonCipher
 

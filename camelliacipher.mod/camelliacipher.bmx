@@ -23,7 +23,7 @@ Rem
 bbdoc: Camellia Symmetric Key Block Cipher.
 about: Camellia has a block size of 128 bits and key sizes of 128, 192 and 256 bits. 
 
-See https://en.wikipedia.org/wiki/Camellia_(cipher)
+See <https://en.wikipedia.org/wiki/Camellia_(cipher)>
 End Rem
 Module Crypto.CamelliaCipher
 

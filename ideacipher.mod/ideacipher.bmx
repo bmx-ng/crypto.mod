@@ -23,7 +23,7 @@ Rem
 bbdoc: IDEA Symmetric Key Block Cipher.
 about: Operates on 64-bit blocks using a 128-bit key.
 
-See https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm
+See <https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm>
 End Rem
 Module Crypto.IdeaCipher
 

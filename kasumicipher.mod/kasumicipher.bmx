@@ -23,7 +23,7 @@ Rem
 bbdoc: KASUMI Block Cipher.
 about: Consists of a 128-bit key with 64-bit blocks.
 
-See https://en.wikipedia.org/wiki/KASUMI
+See <https://en.wikipedia.org/wiki/KASUMI>
 End Rem
 Module Crypto.KasumiCipher
 

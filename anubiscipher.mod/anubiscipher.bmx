@@ -22,9 +22,9 @@ SuperStrict
 Rem
 bbdoc: Anubis Block Cipher.
 about: Anubis operates on data blocks of 128 bits, accepting keys of length 32N bits `(N = 4, ..., 10)`.
-It is designed as a substitution-permutation network, which bears large similarity to #AESCipher.
+It is designed as a substitution-permutation network, which bears large similarity to #Crypto.AESCipher.
 
-See https://en.wikipedia.org/wiki/Anubis_(cipher)
+See <https://en.wikipedia.org/wiki/Anubis_(cipher)>
 End Rem
 Module Crypto.AnubisCipher
 

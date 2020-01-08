@@ -23,7 +23,7 @@ Rem
 bbdoc: XTEA Block Cipher
 about: XTEA works on 64-bit blocks with a 128-bit key.
 
-See https://en.wikipedia.org/wiki/XTEA
+See <https://en.wikipedia.org/wiki/XTEA>
 End Rem
 Module Crypto.XTeaCipher
 

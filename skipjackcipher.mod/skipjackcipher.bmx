@@ -23,7 +23,7 @@ Rem
 bbdoc: Skipjack Block Cipher.
 about: Skipjack uses an 80-bit key to encrypt or decrypt 64-bit data blocks.
 
-See https://en.wikipedia.org/wiki/Skipjack_(cipher)
+See <https://en.wikipedia.org/wiki/Skipjack_(cipher)>
 End Rem
 Module Crypto.SkipjackCipher
 

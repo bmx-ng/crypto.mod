@@ -23,7 +23,7 @@ Rem
 bbdoc: CAST5 Symmetric Key Block Cipher.
 about: Also known as CAST-128, it has a 64-bit block size and a key size of between 40 and 128 bits (in 8-bit increments).
 
-See https://en.wikipedia.org/wiki/CAST-128
+See <https://en.wikipedia.org/wiki/CAST-128>
 End Rem
 Module Crypto.Cast5Cipher
 

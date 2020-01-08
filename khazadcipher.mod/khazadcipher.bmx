@@ -23,7 +23,7 @@ Rem
 bbdoc: KHAZAD Block Cipher.
 about: KHAZAD has an eight-round substitution–permutation network structure.
 
-See https://en.wikipedia.org/wiki/KHAZAD
+See <https://en.wikipedia.org/wiki/KHAZAD>
 End Rem
 Module Crypto.KhazadCipher
 

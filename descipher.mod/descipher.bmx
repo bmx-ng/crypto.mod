@@ -23,7 +23,7 @@ Rem
 bbdoc: DES/3DES Symmetric Key Block Cipher.
 about: Incorprates the legacy Data Encryption Standard 56-bit key cipher and its more scure successor 3DES with key sizes of 168, 112 or 56 bits.
 
-See https://en.wikipedia.org/wiki/Data_Encryption_Standard
+See <https://en.wikipedia.org/wiki/Data_Encryption_Standard>
 End Rem
 Module Crypto.DESCipher
 

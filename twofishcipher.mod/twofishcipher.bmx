@@ -23,7 +23,7 @@ Rem
 bbdoc: Twofish Symmetric Key Block Cipher
 about: Twofish has a block size of 128 bits and key sizes of 128, 192 or 256 bits.
 
-See https://en.wikipedia.org/wiki/Twofish
+See <https://en.wikipedia.org/wiki/Twofish>
 End Rem
 Module Crypto.TwofishCipher
 
