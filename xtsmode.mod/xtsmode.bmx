@@ -25,7 +25,7 @@ about: A chaining mode for 128–bit block ciphers, recommended by IEEE (P1619) 
 
 It is meant to be an encryption mode with random access to the message data without compromising privacy.
 It requires two private keys (of equal length) to perform the encryption process.
-Each encryption invocation includes a sector number or unique identiﬁer speciﬁed as a 128–bit string. 
+Each encryption invocation includes a sector number or unique identifier specified as a 128–bit string. 
 End Rem
 Module Crypto.XTSMode
 
@@ -34,12 +34,15 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_XTS_MODE"
 Import "common.bmx"
 
 Rem
-bbdoc: 
+bbdoc: XTS Cipher Mode.
+about: A chaining mode for 128–bit block ciphers
 End Rem
 Type TXTSCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: It requires two private keys (of equal length) to perform the encryption process.
 	End Rem
 	Method Start:Int(cipher:TCipher, key1:Byte Ptr, key2:Byte Ptr, keylen:Int, numRounds:Int)
 		Local res:Int
@@ -52,17 +55,18 @@ Type TXTSCipherMode Extends TCipherMode
 	returns: CRYPT_OK on success.
 	about: Supports ciphertext stealing (blocks that are not multiples of 16 bytes).
 	
-	The P1619 speciﬁcation states the tweak for sector number shall be represented as a 128–bit little endian string.
+	The P1619 specification states the tweak for sector number shall be represented as a 128–bit little endian string.
 	End Rem
 	Method Encrypt:Int(pt:Byte Ptr, ptlength:UInt, ct:Byte Ptr, tweak:Byte Ptr)
 		Return bmx_crypto_xts_encrypt(modePtr, pt, ptlength, ct, tweak)
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	about: Supports ciphertext stealing (blocks that are not multiples of 16 bytes).
 
-	The P1619 speciﬁcation states the tweak for sector number shall be represented as a 128–bit little endian string.
+	The P1619 specification states the tweak for sector number shall be represented as a 128–bit little endian string.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, ptlength:UInt, pt:Byte Ptr, tweak:Byte Ptr)
 		Return bmx_crypto_xts_decrypt(modePtr, ct, ptlength, pt, tweak)

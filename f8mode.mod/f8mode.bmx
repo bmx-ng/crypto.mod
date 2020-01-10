@@ -31,12 +31,15 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_F8_MODE"
 Import "common.bmx"
 
 Rem
-bbdoc: 
+bbdoc: F8 Cipher Mode
+about: A chaining mode for block ciphers.
 End Rem
 Type TF8CipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Starts the cipher mode state using @key as the secret key and @iv as the counter.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: It uses @saltKey as the IV encryption. The salt key can be shorter than the secret key, but not longer.
 	End Rem
 	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, saltKey:Byte Ptr, saltkeylen:Int, numRounds:Int)
 		Local res:Int
@@ -47,7 +50,7 @@ Type TF8CipherMode Extends TCipherMode
 	Rem
 	bbdoc: Encrypts the plaintext @pt of @length to @ct.
 	returns: CRYPT_OK on success.
-	about: The @length is speciﬁed in bytes and does not have to be a multiple of the ciphers block size.
+	about: The @length is specified in bytes and does not have to be a multiple of the ciphers block size.
 	End Rem
 	Method Encrypt:Int(pt:Byte Ptr, ct:Byte Ptr, length:UInt)
 		Return bmx_crypto_f8_encrypt(modePtr, pt, ct, length)
@@ -56,7 +59,7 @@ Type TF8CipherMode Extends TCipherMode
 	Rem
 	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
 	returns: CRYPT_OK on success.
-	about: The @length is speciﬁed in bytes and does not have to be a multiple of the ciphers block size.
+	about: The @length is specified in bytes and does not have to be a multiple of the ciphers block size.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_f8_decrypt(modePtr, ct, pt, length)
@@ -64,7 +67,7 @@ Type TF8CipherMode Extends TCipherMode
 
 	Rem
 	bbdoc: Reads the IV out of the chaining mode, and stores it in @IV along with the @length of the IV.
-	about: This works with the current IV value only and not the encrypted IV value speciﬁed during the call to #Start.
+	about: This works with the current IV value only and not the encrypted IV value specified during the call to #Start.
 	The purpose of this method is to be able to seek within a current session only. If you want to change the session IV you will have to call #Done and
 	then start a new state with #Start. 
 	End Rem

@@ -21,7 +21,11 @@ SuperStrict
 
 Rem
 bbdoc: Cipher Block Chaining Mode
-about: A simple mode designed to prevent trivial forms of replay and swap attacks on ciphers.
+about:  Cipher Block Chaining mode is a simple mode designed to prevent trivial forms of replay and swap attacks on ciphers.
+It is given as: 
+$$$
+C_i = E_k(P_i \oplus C_{i - 1})
+$$$
 
 It is important that the initialization vector be unique and preferably random for each message encrypted under the same key.
 End Rem
@@ -32,12 +36,17 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_CBC_MODE"
 Import "common.bmx"
 
 Rem
-bbdoc: 
+bbdoc: CBC Cipher Mode.
+about: A symmetric mode block cipher.
 End Rem
 Type TCBCCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: The @iv value is the initialization vector to be used with the cipher.
+	You must fill the IV yourself and it is assumed they are the same length as the block size of the cipher you choose.
+	It is important that the IV be random for each unique message you want to encrypt.
 	End Rem
 	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int)
 		Local res:Int
@@ -56,7 +65,8 @@ Type TCBCCipherMode Extends TCipherMode
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_cbc_decrypt(modePtr, ct, pt, length)

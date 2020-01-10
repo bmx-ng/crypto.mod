@@ -20,10 +20,16 @@
 SuperStrict
 
 Rem
-bbdoc: Counter mode
+bbdoc: Counter Mode
 about: A mode which only uses the encryption function of the cipher.
 
-The initialization vector is treated as a large binary counter.
+Given a initialization vector which is treated as a large binary counter the CTR mode is given as:
+$$$
+\begin{aligned}
+C_{-1} &= C_{-1} + 1\text{ }(\text{mod }2^W) \\
+C_i &= P_i \oplus E_k(C_{-1})
+\end{aligned}
+$$$
 
 As long as the initialization vector is random for each message encrypted under the same key replay and swap attacks are infeasible.
 CTR mode may look simple but it is as secure as the block cipher is under a chosen plaintext attack (provided the initialization vector is unique).
@@ -41,16 +47,29 @@ Enum ECTRCounterMode
 End Enum
 
 Rem
-bbdoc: 
+bbdoc: CTR Cipher Mode
+about: A symmetric mode block cipher.
 End Rem
 Type TCTRCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: The @iv value is the initialization vector to be used with the cipher.
+	You must fill the IV yourself and it is assumed they are the same length as the block size of the cipher you choose.
+	It is important that the IV be random for each unique message you want to encrypt.
+
+	The @counterMode parameter specfies the mode that the counter is to be used in. If #ECTRCounterMode LITTLE_ENDIAN is specfied
+	then the counter will be treated as a little endian value. Otherwise, if BIG_ENDIAN is specified the counter will be treated as a
+	big endian value.
+	The RFC 3686 style of increment for encryption is also supported, by OR'ing RFC3686 with the CTR mode value.
+	The counter will be incremented before encrypting it for the first time.
+	It also supports variable length counters for CTR mode. The (optional) counter length is specified by OR'ing the octet length of
+	the counter against the @counterMode parameter. The default, zero, indicates that a full block length counter will be used.
 	End Rem
-	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int, counterMode:ECTRCounterMode)
+	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int, counterMode:Int)
 		Local res:Int
-		modePtr = bmx_crypto_ctr_start(cipher.index, iv, key, keylen, numRounds, counterMode.Ordinal(), res)
+		modePtr = bmx_crypto_ctr_start(cipher.index, iv, key, keylen, numRounds, counterMode, res)
 		Return res
 	End Method
 
@@ -65,7 +84,8 @@ Type TCTRCipherMode Extends TCipherMode
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_ctr_decrypt(modePtr, ct, pt, length)

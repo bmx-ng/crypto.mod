@@ -21,7 +21,12 @@ SuperStrict
 
 Rem
 bbdoc: Electronic Codebook Mode
-about: The simplest method to use.
+about: Electronic Codebook Mode is the simplest method to use.
+It is given as:
+$$$
+C_i = E_k(P_i)
+$$$
+
 It is very weak since it allows people to swap blocks and perform replay attacks if the same key is used more than once.
 End Rem
 Module Crypto.ECBMode
@@ -31,12 +36,14 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_ECB_MODE"
 Import "common.bmx"
 
 Rem
-bbdoc: 
+bbdoc: ECB Cipher Mode
+about: A symmetric mode block cipher.
 End Rem
 Type TECBCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
 	End Rem
 	Method Start:Int(cipher:TCipher, key:Byte Ptr, keylen:Int, numRounds:Int)
 		Local res:Int
@@ -55,7 +62,8 @@ Type TECBCipherMode Extends TCipherMode
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_ecb_decrypt(modePtr, ct, pt, length)

@@ -23,7 +23,6 @@ Rem
 bbdoc: LRW Mode
 about: This mode is less susceptible to attack or being compromised than other current techniques such as Counter-Mode encryption or Cipher Block Chaining (CBC) encryption.
 The mode addresses threats such as copy-and-paste and dictionary attacks. LRW mode is specially designed for encryption of storage at the sector level.
-
 End Rem
 Module Crypto.lrwMode
 
@@ -32,12 +31,17 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_LRW_MODE -DLTC_LRW_TABLES
 Import "common.bmx"
 
 Rem
-bbdoc: 
+bbdoc: LRW Cipher Mode
 End Rem
 Type TLRWCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: The key is specified in two parts. The first @key is the (normally AES) key and can be any length (typically 16, 24 or 32 octets long).
+	The second key is the @tweak key and is always 16 octets long.
+	
+	The @tweak value is NOT a nonce or IV value it must be random and secret.
 	End Rem
 	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, tweak:Byte Ptr, numRounds:Int)
 		Local res:Int
@@ -56,7 +60,8 @@ Type TLRWCipherMode Extends TCipherMode
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_lrw_decrypt(modePtr, ct, pt, length)

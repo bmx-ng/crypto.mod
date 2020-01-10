@@ -21,11 +21,18 @@ SuperStrict
 
 Rem
 bbdoc: Ciphertext Feedback Mode
-about: A mode designed to prevent trivial forms of replay and swap attacks on ciphers.
+about: Ciphertext Feedback Mode is a mode designed to prevent trivial forms of replay and swap attacks on ciphers.
+It is given as:
+$$$
+\begin{aligned}
+C_i &= P_i \oplus C_{-1} \\
+C_{-1} &= E_k(C_i)
+\end{aligned}
+$$$
 
 The output feedback width is equal to the size of the block cipher.
 That is this mode is used to encrypt whole blocks at a time. However, the library will buﬀer data allowing the user
-to encrypt or decrypt partial blocks without a delay. When this mode is ﬁrst setup it will initially encrypt the initialization vector as required.
+to encrypt or decrypt partial blocks without a delay. When this mode is first setup it will initially encrypt the initialization vector as required.
 End Rem
 Module Crypto.CFBMode
 
@@ -34,12 +41,17 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_CFB_MODE"
 Import "common.bmx"
 
 Rem
-bbdoc: 
+bbdoc: CFB Cipher Mode
+about: A symmetric mode block cipher.
 End Rem
 Type TCFBCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: The @iv value is the initialization vector to be used with the cipher.
+	You must fill the IV yourself and it is assumed they are the same length as the block size of the cipher you choose.
+	It is important that the IV be random for each unique message you want to encrypt.
 	End Rem
 	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int)
 		Local res:Int
@@ -58,7 +70,8 @@ Type TCFBCipherMode Extends TCipherMode
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_cfb_decrypt(modePtr, ct, pt, length)

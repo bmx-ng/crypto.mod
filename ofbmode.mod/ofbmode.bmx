@@ -21,9 +21,16 @@ SuperStrict
 
 Rem
 bbdoc: Output Feedback Mode
-about: Similar to CBC mode, it is a simple mode designed to prevent trivial forms of replay and swap attacks on ciphers.
+about: Similar to #Crypto.CBCMode, it is a simple mode designed to prevent trivial forms of replay and swap attacks on ciphers.
+It is given as:
+$$$
+\begin{aligned}
+C_{-1} &= E_k(C_{-1}) \\
+C_i &= P_i \oplus C_{-1}
+\end{aligned}
+$$$
 
-Output width in is the same as the width of the block cipher.
+Like in the #Crypto.CFBMode, the output width is the same as the width of the block cipher. 
 This mode will also buﬀer the output which will allow you to encrypt or decrypt partial blocks without delay.
 End Rem
 Module Crypto.OFBMode
@@ -33,12 +40,17 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_OFB_MODE"
 Import "common.bmx"
 
 Rem
-bbdoc: An 
+bbdoc: OFB Cipher Mode
+about: A symmetric mode block cipher.
 End Rem
 Type TOFBCipherMode Extends TCipherMode
 
 	Rem
-	bbdoc: 
+	bbdoc: Initializes the cipher mode.
+	returns: CRYPT_OK if the cipher initialized correctly, otherwise, returns an error code.
+	about: The @iv value is the initialization vector to be used with the cipher.
+	You must fill the IV yourself and it is assumed they are the same length as the block size of the cipher you choose.
+	It is important that the IV be random for each unique message you want to encrypt.
 	End Rem
 	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int)
 		Local res:Int
@@ -57,7 +69,8 @@ Type TOFBCipherMode Extends TCipherMode
 	End Method
 	
 	Rem
-	bbdoc: 
+	bbdoc: Decrypts the ciphertext @ct of @length to @pt.
+	returns: CRYPT_OK on success.
 	End Rem
 	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Return bmx_crypto_ofb_decrypt(modePtr, ct, pt, length)
