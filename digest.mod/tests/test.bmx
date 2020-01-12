@@ -6,6 +6,8 @@ Import Crypto.sha1digest
 Import Crypto.sha256digest
 Import Crypto.sha512digest
 Import Crypto.crc32
+Import Crypto.WhirlpoolDigest
+Import Crypto.sha3digest
 Import BRL.MaxUnit
 
 New TTestSuite.run()
@@ -32,6 +34,29 @@ Type TDigestTest Extends TTest
 	Global CRC32_HASH_ARRAY:Byte[] = [65, 79, 163, 57]
 	Const CRC32_INT:Int = 1095738169
 	
+	Const WHIRLPOOL_HASH_STRING:String = "b97de512e91e3828b40d2b0fdce9ceb3c4a71f9bea8d88e75c4fa854df36725fd2b52eb6544edcacd6f8beddfea403cb55ae31f03ad62a5ef54e42ee82c3fb35"
+	Global WHIRLPOOL_HASH_ARRAY:Byte[] = [185, 125, 229, 18, 233, 30, 56, 40, 180, 13, 43, 15, 220, 233, 206, 179, 196, 167, 31, 155, 234, 141, ..
+										136, 231, 92, 79, 168, 84, 223, 54, 114, 95, 210, 181, 46, 182, 84, 78, 220, 172, 214, 248, 190, 221, ..
+										254, 164, 3, 203, 85, 174, 49, 240, 58, 214, 42, 94, 245, 78, 66, 238, 130, 195, 251, 53]
+
+	Const SHA3_512_HASH_STRING:String = "01dedd5de4ef14642445ba5f5b97c15e47b9ad931326e4b0727cd94cefc44fff23f07bf543139939b49128caf436dc1bdee54fcb24023a08d9403f9b4bf0d450"
+	Global SHA3_512_HASH_ARRAY:Byte[] = [1, 222, 221, 93, 228, 239, 20, 100, 36, 69, 186, 95, 91, 151, 193, 94, 71, 185, 173, 147, 19, 38, 228, ..
+										176, 114, 124, 217, 76, 239, 196, 79, 255, 35, 240, 123, 245, 67, 19, 153, 57, 180, 145, 40, 202, 244, ..
+										54, 220, 27, 222, 229, 79, 203, 36, 2, 58, 8, 217, 64, 63, 155, 75, 240, 212, 80]
+	
+	Const SHA3_384_HASH_STRING:String = "7063465e08a93bce31cd89d2e3ca8f602498696e253592ed26f07bf7e703cf328581e1471a7ba7ab119b1a9ebdf8be41"
+	Global SHA3_384_HASH_ARRAY:Byte[] = [112, 99, 70, 94, 8, 169, 59, 206, 49, 205, 137, 210, 227, 202, 143, 96, 36, 152, 105, 110, 37, 53, ..
+										146, 237, 38, 240, 123, 247, 231, 3, 207, 50, 133, 129, 225, 71, 26, 123, 167, 171, 17, 155, 26, 158, ..
+										189, 248, 190, 65]
+	
+	Const SHA3_256_HASH_STRING:String = "69070dda01975c8c120c3aada1b282394e7f032fa9cf32f4cb2259a0897dfc04"
+	Global SHA3_256_HASH_ARRAY:Byte[] = [105, 7, 13, 218, 1, 151, 92, 140, 18, 12, 58, 173, 161, 178, 130, 57, 78, 127, 3, 47, 169, 207, 50, ..
+										244, 203, 34, 89, 160, 137, 125, 252, 4]
+	
+	Const SHA3_224_HASH_STRING:String = "d15dadceaa4d5d7bb3b48f446421d542e08ad8887305e28d58335795"
+	Global SHA3_224_HASH_ARRAY:Byte[] = [209, 93, 173, 206, 170, 77, 93, 123, 179, 180, 143, 68, 100, 33, 213, 66, 224, 138, 216, 136, 115, 5, ..
+										226, 141, 88, 51, 87, 149]
+
 	Method testMD5() { test }
 	
 		Local digest:TMessageDigest = GetMessageDigest("MD5")
@@ -115,6 +140,70 @@ Type TDigestTest Extends TTest
 		crc32.Digest(TEST_PHRASE, result)
 		
 		assertEquals(CRC32_INT, result)
+	
+	End Method
+
+	Method testWhirlpool() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("WHIRLPOOL")
+	
+		assertEquals(WHIRLPOOL_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(WHIRLPOOL_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until WHIRLPOOL_HASH_ARRAY.length
+			assertEquals(WHIRLPOOL_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testSHA3512() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("SHA3-512")
+	
+		assertEquals(SHA3_512_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(SHA3_512_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until SHA3_512_HASH_ARRAY.length
+			assertEquals(SHA3_512_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testSHA3384() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("SHA3-384")
+	
+		assertEquals(SHA3_384_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(SHA3_384_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until SHA3_384_HASH_ARRAY.length
+			assertEquals(SHA3_384_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testSHA3256() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("SHA3-256")
+	
+		assertEquals(SHA3_256_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(SHA3_256_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until SHA3_256_HASH_ARRAY.length
+			assertEquals(SHA3_256_HASH_ARRAY[i], bytes[i])
+		Next
 	
 	End Method
 
