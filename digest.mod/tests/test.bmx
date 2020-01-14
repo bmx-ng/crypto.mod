@@ -13,6 +13,7 @@ Import Crypto.ripemd256digest
 Import Crypto.ripemd160digest
 Import Crypto.ripemd128digest
 Import Crypto.blake2bdigest
+Import Crypto.TigerDigest
 Import BRL.MaxUnit
 
 New TTestSuite.run()
@@ -92,6 +93,9 @@ Type TDigestTest Extends TTest
 
 	Const BLAKE2B_160_HASH_STRING:String = "3c523ed102ab45a37d54f5610d5a983162fde84f"
 	Global BLAKE2B_160_HASH_ARRAY:Byte[] = [60, 82, 62, 209, 2, 171, 69, 163, 125, 84, 245, 97, 13, 90, 152, 49, 98, 253, 232, 79]
+
+	Const TIGER_HASH_STRING:String = "6d12a41e72e644f017b6f0e2f7b44c6285f06dd5d2c5b075"
+	Global TIGER_HASH_ARRAY:Byte[] = [109, 18, 164, 30, 114, 230, 68, 240, 23, 182, 240, 226, 247, 180, 76, 98, 133, 240, 109, 213, 210, 197, 176, 117]
 
 	Method testMD5() { test }
 	
@@ -367,6 +371,22 @@ Type TDigestTest Extends TTest
 		
 		For Local i:Int = 0 Until BLAKE2B_160_HASH_ARRAY.length
 			assertEquals(BLAKE2B_160_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testTiger() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("TIGER")
+	
+		assertEquals(TIGER_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(TIGER_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until TIGER_HASH_ARRAY.length
+			assertEquals(TIGER_HASH_ARRAY[i], bytes[i])
 		Next
 	
 	End Method

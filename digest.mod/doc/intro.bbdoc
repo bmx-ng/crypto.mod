@@ -24,6 +24,7 @@ The following is a list of available digests :
 | #Crypto.Ripemd256Digest           | 32 |
 | #Crypto.Blake2BDigest ([TBlake2B_256])  | 32 |
 | #Crypto.SHA3Digest ([TSHA3_224])  | 28 |
+| #Crypto.TigerDigest               | 24 |
 | #Crypto.SHA1Digest                | 20 |
 | #Crypto.Ripemd160Digest           | 20 |
 | #Crypto.Blake2BDigest ([TBlake2B_160])  | 20 |
