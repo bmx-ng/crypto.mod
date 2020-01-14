@@ -21,6 +21,8 @@ SuperStrict
 
 Rem
 bbdoc: RIPEMD-320 Digest
+about: 
+See <https://en.wikipedia.org/wiki/RIPEMD>
 End Rem
 Module Crypto.Ripemd320Digest
 

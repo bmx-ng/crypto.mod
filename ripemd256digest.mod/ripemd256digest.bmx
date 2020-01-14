@@ -21,6 +21,8 @@ SuperStrict
 
 Rem
 bbdoc: RIPEMD-256 Digest
+about: 
+See <https://en.wikipedia.org/wiki/RIPEMD>
 End Rem
 Module Crypto.Ripemd256Digest
 

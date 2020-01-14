@@ -21,6 +21,8 @@ SuperStrict
 
 Rem
 bbdoc: MD5 Digest
+about: 
+See <https://en.wikipedia.org/wiki/MD5>
 End Rem
 Module Crypto.MD5Digest
 

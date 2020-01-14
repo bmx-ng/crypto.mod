@@ -21,6 +21,8 @@ SuperStrict
 
 Rem
 bbdoc: WHILRPOOL Digest
+about: 
+See <https://en.wikipedia.org/wiki/Whirlpool_(hash_function)>
 End Rem
 Module Crypto.WhirlpoolDigest
 

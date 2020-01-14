@@ -21,6 +21,8 @@ SuperStrict
 
 Rem
 bbdoc: SHA-256 Digest
+about: 
+See <https://en.wikipedia.org/wiki/SHA-2>
 End Rem
 Module Crypto.SHA256Digest
 
