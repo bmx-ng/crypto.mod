@@ -66,7 +66,8 @@ End Type
 Type TSHA1DigestRegister Extends TDigestRegister
 
 	Method GetDigest:TMessageDigest( name:String ) Override
-		If name.ToUpper() = "SHA1" Then
+		name = name.ToUpper()
+		If name = "SHA1" Or name = "SHA-1" Then
 			Return New TSHA1
 		End If
 	End Method
