@@ -8,6 +8,11 @@ Import Crypto.sha512digest
 Import Crypto.crc32
 Import Crypto.WhirlpoolDigest
 Import Crypto.sha3digest
+Import Crypto.ripemd320digest
+Import Crypto.ripemd256digest
+Import Crypto.ripemd160digest
+Import Crypto.ripemd128digest
+Import Crypto.blake2bdigest
 Import BRL.MaxUnit
 
 New TTestSuite.run()
@@ -56,6 +61,37 @@ Type TDigestTest Extends TTest
 	Const SHA3_224_HASH_STRING:String = "d15dadceaa4d5d7bb3b48f446421d542e08ad8887305e28d58335795"
 	Global SHA3_224_HASH_ARRAY:Byte[] = [209, 93, 173, 206, 170, 77, 93, 123, 179, 180, 143, 68, 100, 33, 213, 66, 224, 138, 216, 136, 115, 5, ..
 										226, 141, 88, 51, 87, 149]
+
+	Const RIPEMD_320_HASH_STRING:String = "e7660e67549435c62141e51c9ab1dcc3b1ee9f65c0b3e561ae8f58c5dba3d21997781cd1cc6fbc34"
+	Global RIPEMD_320_HASH_ARRAY:Byte[] = [231, 102, 14, 103, 84, 148, 53, 198, 33, 65, 229, 28, 154, 177, 220, 195, 177, 238, 159, 101, 192, ..
+										179, 229, 97, 174, 143, 88, 197, 219, 163, 210, 25, 151, 120, 28, 209, 204, 111, 188, 52]
+
+	Const RIPEMD_256_HASH_STRING:String = "c3b0c2f764ac6d576a6c430fb61a6f2255b4fa833e094b1ba8c1e29b6353036f"
+	Global RIPEMD_256_HASH_ARRAY:Byte[] = [195, 176, 194, 247, 100, 172, 109, 87, 106, 108, 67, 15, 182, 26, 111, 34, 85, 180, 250, 131, 62, 9, ..
+										75, 27, 168, 193, 226, 155, 99, 83, 3, 111]
+
+	Const RIPEMD_160_HASH_STRING:String = "37f332f68db77bd9d7edd4969571ad671cf9dd3b"
+	Global RIPEMD_160_HASH_ARRAY:Byte[] = [55, 243, 50, 246, 141, 183, 123, 217, 215, 237, 212, 150, 149, 113, 173, 103, 28, 249, 221, 59]
+
+	Const RIPEMD_128_HASH_STRING:String = "3fa9b57f053c053fbe2735b2380db596"
+	Global RIPEMD_128_HASH_ARRAY:Byte[] = [63, 169, 181, 127, 5, 60, 5, 63, 190, 39, 53, 178, 56, 13, 181, 150]
+
+	Const BLAKE2B_512_HASH_STRING:String = "a8add4bdddfd93e4877d2746e62817b116364a1fa7bc148d95090bc7333b3673f82401cf7aa2e4cb1ecd90296e3f14cb5413f8ed77be73045b13914cdcd6a918"
+	Global BLAKE2B_512_HASH_ARRAY:Byte[] = [168, 173, 212, 189, 221, 253, 147, 228, 135, 125, 39, 70, 230, 40, 23, 177, 22, 54, 74, 31, 167, ..
+										188, 20, 141, 149, 9, 11, 199, 51, 59, 54, 115, 248, 36, 1, 207, 122, 162, 228, 203, 30, 205, 144, 41, ..
+										110, 63, 20, 203, 84, 19, 248, 237, 119, 190, 115, 4, 91, 19, 145, 76, 220, 214, 169, 24]
+
+	Const BLAKE2B_384_HASH_STRING:String = "b7c81b228b6bd912930e8f0b5387989691c1cee1e65aade4da3b86a3c9f678fc8018f6ed9e2906720c8d2a3aeda9c03d"
+	Global BLAKE2B_384_HASH_ARRAY:Byte[] = [183, 200, 27, 34, 139, 107, 217, 18, 147, 14, 143, 11, 83, 135, 152, 150, 145, 193, 206, 225, 230, ..
+										90, 173, 228, 218, 59, 134, 163, 201, 246, 120, 252, 128, 24, 246, 237, 158, 41, 6, 114, 12, 141, 42, ..
+										58, 237, 169, 192, 61]
+
+	Const BLAKE2B_256_HASH_STRING:String = "01718cec35cd3d796dd00020e0bfecb473ad23457d063b75eff29c0ffa2e58a9"
+	Global BLAKE2B_256_HASH_ARRAY:Byte[] = [1, 113, 140, 236, 53, 205, 61, 121, 109, 208, 0, 32, 224, 191, 236, 180, 115, 173, 35, 69, 125, 6, ..
+										59, 117, 239, 242, 156, 15, 250, 46, 88, 169]
+
+	Const BLAKE2B_160_HASH_STRING:String = "3c523ed102ab45a37d54f5610d5a983162fde84f"
+	Global BLAKE2B_160_HASH_ARRAY:Byte[] = [60, 82, 62, 209, 2, 171, 69, 163, 125, 84, 245, 97, 13, 90, 152, 49, 98, 253, 232, 79]
 
 	Method testMD5() { test }
 	
@@ -203,6 +239,134 @@ Type TDigestTest Extends TTest
 		
 		For Local i:Int = 0 Until SHA3_256_HASH_ARRAY.length
 			assertEquals(SHA3_256_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testRipemd320() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("RIPEMD-320")
+	
+		assertEquals(RIPEMD_320_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(RIPEMD_320_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until RIPEMD_320_HASH_ARRAY.length
+			assertEquals(RIPEMD_320_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testRipemd256() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("RIPEMD-256")
+	
+		assertEquals(RIPEMD_256_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(RIPEMD_256_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until RIPEMD_256_HASH_ARRAY.length
+			assertEquals(RIPEMD_256_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testRipemd160() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("RIPEMD-160")
+	
+		assertEquals(RIPEMD_160_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(RIPEMD_160_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until RIPEMD_160_HASH_ARRAY.length
+			assertEquals(RIPEMD_160_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testRipemd128() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("RIPEMD-128")
+	
+		assertEquals(RIPEMD_128_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(RIPEMD_128_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until RIPEMD_128_HASH_ARRAY.length
+			assertEquals(RIPEMD_128_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testBlake2B512() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("BLAKE2B-512")
+	
+		assertEquals(BLAKE2B_512_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(BLAKE2B_512_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until BLAKE2B_512_HASH_ARRAY.length
+			assertEquals(BLAKE2B_512_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testBlake2B384() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("BLAKE2B-384")
+	
+		assertEquals(BLAKE2B_384_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(BLAKE2B_384_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until BLAKE2B_384_HASH_ARRAY.length
+			assertEquals(BLAKE2B_384_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testBlake2B256() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("BLAKE2B-256")
+	
+		assertEquals(BLAKE2B_256_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(BLAKE2B_256_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until BLAKE2B_256_HASH_ARRAY.length
+			assertEquals(BLAKE2B_256_HASH_ARRAY[i], bytes[i])
+		Next
+	
+	End Method
+
+	Method testBlake2B160() { test }
+	
+		Local digest:TMessageDigest = GetMessageDigest("BLAKE2B-160")
+	
+		assertEquals(BLAKE2B_160_HASH_STRING, digest.Digest(TEST_PHRASE))
+	
+		Local bytes:Byte[] = digest.DigestBytes(TEST_PHRASE)
+
+		assertEquals(BLAKE2B_160_HASH_ARRAY.length, bytes.length)
+		
+		For Local i:Int = 0 Until BLAKE2B_160_HASH_ARRAY.length
+			assertEquals(BLAKE2B_160_HASH_ARRAY[i], bytes[i])
 		Next
 	
 	End Method
