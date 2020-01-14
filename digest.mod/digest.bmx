@@ -57,7 +57,10 @@ Function ListDigests:TArrayList<String>()
 	Local register:TDigestRegister=digest_registry
 
 	While register
-		list.Add(register.ToString())
+		Local sp:String[] = register.ToString().Split(",")
+		For Local digest:String = EachIn sp
+			list.Add(digest.Trim())
+		Next
 		register = register._succ
 	Wend
 
