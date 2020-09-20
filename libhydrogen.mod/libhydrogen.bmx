@@ -19,15 +19,22 @@ SuperStrict
 Module Crypto.LibHydrogen
 
 
-ModuleInfo "Version: 1.01"
+ModuleInfo "Version: 1.02"
 ModuleInfo "Author: Frank Denis."
 ModuleInfo "License: ISC"
 ModuleInfo "Credit: Adapted for BlitzMax by Bruce A Henderson"
 
+ModuleInfo "History: 1.02"
+ModuleInfo "History: Updated for haiku"
 ModuleInfo "History: 1.01"
 ModuleInfo "History: Disabled for NX."
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release."
+
+'
+' random.h
+'   Added __HAIKU__ defs
+'
 
 ?Not nx
 Import "source.bmx"
