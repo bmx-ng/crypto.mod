@@ -180,7 +180,7 @@ hydro_random_init(void)
     return 0;
 }
 
-#elif defined(__unix__)
+#elif defined(__unix__) || defined(__HAIKU__)
 
 #include <errno.h>
 #include <fcntl.h>
@@ -190,7 +190,7 @@ hydro_random_init(void)
 #include <sys/types.h>
 #include <unistd.h>
 
-#ifdef __linux__
+#ifdef __linux__ || __HAIKU__
 static int
 hydro_random_block_on_dev_random(void)
 {
