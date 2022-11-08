@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 /**
   @file camellia.c
@@ -627,6 +621,9 @@ int camellia_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const symme
 
 int camellia_test(void)
 {
+#ifndef LTC_TEST
+   return CRYPT_NOP;
+#else
    static const struct {
       int keylen;
       unsigned char key[32], pt[16], ct[16];
@@ -703,6 +700,7 @@ int camellia_test(void)
       }
    }
    return CRYPT_OK;
+#endif
 }
 
 void camellia_done(symmetric_key *skey)
@@ -720,7 +718,3 @@ int camellia_keysize(int *keysize)
 }
 
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

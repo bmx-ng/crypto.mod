@@ -3,7 +3,19 @@ SuperStrict
 
 Module Crypto.libtomcrypt
 
+ModuleInfo "Version: 1.01"
+ModuleInfo "Author: Frank Denis."
+ModuleInfo "License: ISC"
+ModuleInfo "Credit: Adapted for BlitzMax by Bruce A Henderson"
+
+ModuleInfo "History: 1.01"
+ModuleInfo "History: Updated to libtomcrypt 1.18.2.3474ca3"
+ModuleInfo "History: 1.00"
+ModuleInfo "History: Initial Release."
+
 ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE"
+
+Import "common.bmx"
 
 Import "libtomcrypt/src/headers/*.h"
 

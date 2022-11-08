@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 #include "tomcrypt_private.h"
 
 /**
@@ -24,7 +18,7 @@
   @param ctr    CTR state
   @return CRYPT_OK if successful
 */
-static int _ctr_encrypt(const unsigned char *pt, unsigned char *ct, unsigned long len, symmetric_CTR *ctr)
+static int s_ctr_encrypt(const unsigned char *pt, unsigned char *ct, unsigned long len, symmetric_CTR *ctr)
 {
    int x, err;
 
@@ -111,7 +105,7 @@ int ctr_encrypt(const unsigned char *pt, unsigned char *ct, unsigned long len, s
    if ((cipher_descriptor[ctr->cipher].accel_ctr_encrypt != NULL) && (len >= (unsigned long)ctr->blocklen)) {
      if (ctr->padlen < ctr->blocklen) {
        fr = ctr->blocklen - ctr->padlen;
-       if ((err = _ctr_encrypt(pt, ct, fr, ctr)) != CRYPT_OK) {
+       if ((err = s_ctr_encrypt(pt, ct, fr, ctr)) != CRYPT_OK) {
           return err;
        }
        pt += fr;
@@ -129,11 +123,7 @@ int ctr_encrypt(const unsigned char *pt, unsigned char *ct, unsigned long len, s
      }
    }
 
-   return _ctr_encrypt(pt, ct, len, ctr);
+   return s_ctr_encrypt(pt, ct, len, ctr);
 }
 
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

@@ -3,6 +3,7 @@
 | Name          | Block Size (bytes) | Key Range (bytes) | Rounds |
 |---|---|---|---|
 | #Crypto.BlowfishCipher   | 8  | 8 ... 56   | 16 |
+| #Crypto.TeaCipher        | 8  | 16         | 32 |
 | #Crypto.XteaCipher       | 8  | 16         | 32 |
 | #Crypto.AESCipher        | 16 | 16, 24, 32 | 10, 12, 14 |
 | #Crypto.TwofishCipher    | 16 | 16, 24, 32 | 16 |

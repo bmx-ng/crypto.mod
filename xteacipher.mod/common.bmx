@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -31,5 +31,9 @@ Extern
 
 	Function bmx_crypto_xtea_register:Int()
 	Function bmx_crypto_xtea_keysize:Int(key:Int)
-
+	Function xtea_setup:Int(key:Byte Ptr, keylen:Int, rounds:Int, skey:Byte Ptr)
+	Function xtea_ecb_encrypt:Int(pt:Byte Ptr, ct:Byte Ptr, skey:Byte Ptr)
+	Function xtea_ecb_decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, skey:Byte Ptr)
+	Function xtea_done(skey:Byte Ptr)
+		
 End Extern

@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -40,12 +40,6 @@ ModuleInfo "CC_OPTS: -DLTC_NO_TEST -DLTC_NO_FILE -DLTC_CTR_MODE"
 
 Import "common.bmx"
 
-Enum ECTRCounterMode
-	LITTLE_ENDIAN = $0000
-	BIG_ENDIAN = $1000
-	RFC3686 = $2000
-End Enum
-
 Rem
 bbdoc: CTR Cipher Mode
 about: A symmetric mode block cipher.
@@ -67,7 +61,7 @@ Type TCTRCipherMode Extends TCipherMode
 	It also supports variable length counters for CTR mode. The (optional) counter length is specified by OR'ing the octet length of
 	the counter against the @counterMode parameter. The default, zero, indicates that a full block length counter will be used.
 	End Rem
-	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int, counterMode:Int)
+	Method Start:Int(cipher:TCipher, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int, counterMode:ECTRCounterMode)
 		Local res:Int
 		modePtr = bmx_crypto_ctr_start(cipher.index, iv, key, keylen, numRounds, counterMode, res)
 		Return res

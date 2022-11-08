@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -50,16 +50,16 @@ Rem
 bbdoc: Returns a list of all currently registered digests.
 about: The returned digest names can be used with #GetMessageDigest to get a #TMessageDigest instance.
 End Rem
-Function ListDigests:TArrayList<String>()
+Function ListDigests:TList()
 
-	Local list:TArrayLIst<String> = New TArrayList<String>()
+	Local list:TList = New TList
 
 	Local register:TDigestRegister=digest_registry
 
 	While register
 		Local sp:String[] = register.ToString().Split(",")
 		For Local digest:String = EachIn sp
-			list.Add(digest.Trim())
+			list.AddLast(digest.Trim())
 		Next
 		register = register._succ
 	Wend
@@ -68,23 +68,6 @@ Function ListDigests:TArrayList<String>()
 	
 	Return list
 End Function
-
-Rem
-bbdoc: This exception is thrown when a particular cryptographic algorithm is requested but is not available in the environment.
-End Rem
-Type TNoSuchAlgorithmException Extends TBlitzException
-
-	Field message:String
-
-	Method New(message:String)
-		Self.message = message
-	End Method
-
-	Method ToString:String() Override
-		Return message
-	End Method
-
-End Type
 
 Rem
 bbdoc: An abstract base type for message digest implementations.

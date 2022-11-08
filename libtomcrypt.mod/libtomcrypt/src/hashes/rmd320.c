@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 #include "tomcrypt_private.h"
 
 /**
@@ -94,9 +88,9 @@ const struct ltc_hash_descriptor rmd320_desc =
 
 
 #ifdef LTC_CLEAN_STACK
-static int _rmd320_compress(hash_state *md, const unsigned char *buf)
+static int ss_rmd320_compress(hash_state *md, const unsigned char *buf)
 #else
-static int  rmd320_compress(hash_state *md, const unsigned char *buf)
+static int  s_rmd320_compress(hash_state *md, const unsigned char *buf)
 #endif
 {
    ulong32 aa,bb,cc,dd,ee,aaa,bbb,ccc,ddd,eee,tmp,X[16];
@@ -325,10 +319,10 @@ static int  rmd320_compress(hash_state *md, const unsigned char *buf)
 }
 
 #ifdef LTC_CLEAN_STACK
-static int rmd320_compress(hash_state *md, const unsigned char *buf)
+static int s_rmd320_compress(hash_state *md, const unsigned char *buf)
 {
    int err;
-   err = _rmd320_compress(md, buf);
+   err = ss_rmd320_compress(md, buf);
    burn_stack(sizeof(ulong32) * 27 + sizeof(int));
    return err;
 }
@@ -364,7 +358,7 @@ int rmd320_init(hash_state * md)
    @param inlen  The length of the data (octets)
    @return CRYPT_OK if successful
 */
-HASH_PROCESS(rmd320_process, rmd320_compress, rmd320, 64)
+HASH_PROCESS(rmd320_process, s_rmd320_compress, rmd320, 64)
 
 /**
    Terminate the hash to get the digest
@@ -398,7 +392,7 @@ int rmd320_done(hash_state * md, unsigned char *out)
         while (md->rmd320.curlen < 64) {
             md->rmd320.buf[md->rmd320.curlen++] = (unsigned char)0;
         }
-        rmd320_compress(md, md->rmd320.buf);
+        s_rmd320_compress(md, md->rmd320.buf);
         md->rmd320.curlen = 0;
     }
 
@@ -409,7 +403,7 @@ int rmd320_done(hash_state * md, unsigned char *out)
 
     /* store length */
     STORE64L(md->rmd320.length, md->rmd320.buf+56);
-    rmd320_compress(md, md->rmd320.buf);
+    s_rmd320_compress(md, md->rmd320.buf);
 
     /* copy output */
     for (i = 0; i < 10; i++) {
@@ -478,7 +472,7 @@ int rmd320_test(void)
 
    for (i = 0; i < (int)(sizeof(tests)/sizeof(tests[0])); i++) {
        rmd320_init(&md);
-       rmd320_process(&md, (unsigned char *)tests[i].msg, strlen(tests[i].msg));
+       rmd320_process(&md, (unsigned char *)tests[i].msg, XSTRLEN(tests[i].msg));
        rmd320_done(&md, tmp);
        if (compare_testvector(tmp, sizeof(tmp), tests[i].hash, sizeof(tests[i].hash), "RIPEMD320", i)) {
           return CRYPT_FAIL_TESTVECTOR;
@@ -489,7 +483,3 @@ int rmd320_test(void)
 }
 
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

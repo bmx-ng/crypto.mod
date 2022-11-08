@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 #include "tomcrypt_private.h"
 
@@ -15,7 +9,7 @@
 */
 
 #if defined(LTC_TEST) && defined(LTC_TEST_DBG)
-static void _print_hex(const char* what, const void* v, const unsigned long l)
+static void s_print_hex(const char* what, const void* v, const unsigned long l)
 {
   const unsigned char* p = v;
   unsigned long x, y = 0, z;
@@ -70,12 +64,12 @@ int compare_testvector(const void* is, const unsigned long is_len, const void* s
    }
 #if defined(LTC_TEST) && defined(LTC_TEST_DBG)
    if (res != 0) {
-      fprintf(stderr, "Testvector #%i of %s failed:\n", which, what);
-      _print_hex("SHOULD", should, should_len);
-      _print_hex("IS    ", is, is_len);
+      fprintf(stderr, "Testvector #%i(0x%x) of %s failed:\n", which, which, what);
+      s_print_hex("SHOULD", should, should_len);
+      s_print_hex("IS    ", is, is_len);
 #if LTC_TEST_DBG > 1
    } else {
-      fprintf(stderr, "Testvector #%i of %s passed!\n", which, what);
+      fprintf(stderr, "Testvector #%i(0x%x) of %s passed!\n", which, which, what);
 #endif
    }
 #else
@@ -85,7 +79,3 @@ int compare_testvector(const void* is, const unsigned long is_len, const void* s
 
    return res;
 }
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

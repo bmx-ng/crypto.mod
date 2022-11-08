@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 /* ---- HASH FUNCTIONS ---- */
 #if defined(LTC_SHA3) || defined(LTC_KECCAK)
@@ -346,7 +340,7 @@ int sha512_224_init(hash_state * md);
 #define sha512_224_process sha512_process
 int sha512_224_done(hash_state * md, unsigned char *out);
 int sha512_224_test(void);
-extern  const struct ltc_hash_descriptor sha512_224_desc;
+extern const struct ltc_hash_descriptor sha512_224_desc;
 #endif
 
 #ifdef LTC_SHA256
@@ -500,13 +494,10 @@ int hash_memory(int hash,
                 const unsigned char *in,  unsigned long inlen,
                       unsigned char *out, unsigned long *outlen);
 int hash_memory_multi(int hash, unsigned char *out, unsigned long *outlen,
-                      const unsigned char *in, unsigned long inlen, ...);
+                      const unsigned char *in, unsigned long inlen, ...)
+                      LTC_NULL_TERMINATED;
 
 #ifndef LTC_NO_FILE
 int hash_filehandle(int hash, FILE *in, unsigned char *out, unsigned long *outlen);
 int hash_file(int hash, const char *fname, unsigned char *out, unsigned long *outlen);
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

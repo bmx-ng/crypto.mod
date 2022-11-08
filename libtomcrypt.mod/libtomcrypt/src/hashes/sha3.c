@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 /* based on https://github.com/brainhub/SHA3IUF (public domain) */
 
@@ -137,7 +131,7 @@ const struct ltc_hash_descriptor keccak_512_desc =
 #define SHA3_KECCAK_SPONGE_WORDS 25 /* 1600 bits > 200 bytes > 25 x ulong64 */
 #define SHA3_KECCAK_ROUNDS 24
 
-static const ulong64 keccakf_rndc[24] = {
+static const ulong64 s_keccakf_rndc[24] = {
    CONST64(0x0000000000000001), CONST64(0x0000000000008082),
    CONST64(0x800000000000808a), CONST64(0x8000000080008000),
    CONST64(0x000000000000808b), CONST64(0x0000000080000001),
@@ -152,15 +146,15 @@ static const ulong64 keccakf_rndc[24] = {
    CONST64(0x0000000080000001), CONST64(0x8000000080008008)
 };
 
-static const unsigned keccakf_rotc[24] = {
+static const unsigned s_keccakf_rotc[24] = {
    1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 2, 14, 27, 41, 56, 8, 25, 43, 62, 18, 39, 61, 20, 44
 };
 
-static const unsigned keccakf_piln[24] = {
+static const unsigned s_keccakf_piln[24] = {
    10, 7, 11, 17, 18, 3, 5, 16, 8, 21, 24, 4, 15, 23, 19, 13, 12, 2, 20, 14, 22, 9, 6, 1
 };
 
-static void keccakf(ulong64 s[25])
+static void s_keccakf(ulong64 s[25])
 {
    int i, j, round;
    ulong64 t, bc[5];
@@ -179,9 +173,9 @@ static void keccakf(ulong64 s[25])
       /* Rho Pi */
       t = s[1];
       for(i = 0; i < 24; i++) {
-         j = keccakf_piln[i];
+         j = s_keccakf_piln[i];
          bc[0] = s[j];
-         s[j] = ROL64(t, keccakf_rotc[i]);
+         s[j] = ROL64(t, s_keccakf_rotc[i]);
          t = bc[0];
       }
       /* Chi */
@@ -194,11 +188,11 @@ static void keccakf(ulong64 s[25])
          }
       }
       /* Iota */
-      s[0] ^= keccakf_rndc[round];
+      s[0] ^= s_keccakf_rndc[round];
    }
 }
 
-static LTC_INLINE int _done(hash_state *md, unsigned char *hash, ulong64 pad)
+static LTC_INLINE int ss_done(hash_state *md, unsigned char *hash, ulong64 pad)
 {
    unsigned i;
 
@@ -207,7 +201,7 @@ static LTC_INLINE int _done(hash_state *md, unsigned char *hash, ulong64 pad)
 
    md->sha3.s[md->sha3.word_index] ^= (md->sha3.saved ^ (pad << (md->sha3.byte_index * 8)));
    md->sha3.s[SHA3_KECCAK_SPONGE_WORDS - md->sha3.capacity_words - 1] ^= CONST64(0x8000000000000000);
-   keccakf(md->sha3.s);
+   s_keccakf(md->sha3.s);
 
    /* store sha3.s[] as little-endian bytes into sha3.sb */
    for(i = 0; i < SHA3_KECCAK_SPONGE_WORDS; i++) {
@@ -289,7 +283,7 @@ int sha3_process(hash_state *md, const unsigned char *in, unsigned long inlen)
       md->sha3.byte_index = 0;
       md->sha3.saved = 0;
       if(++md->sha3.word_index == (SHA3_KECCAK_SPONGE_WORDS - md->sha3.capacity_words)) {
-         keccakf(md->sha3.s);
+         s_keccakf(md->sha3.s);
          md->sha3.word_index = 0;
       }
    }
@@ -303,7 +297,7 @@ int sha3_process(hash_state *md, const unsigned char *in, unsigned long inlen)
       LOAD64L(t, in);
       md->sha3.s[md->sha3.word_index] ^= t;
       if(++md->sha3.word_index == (SHA3_KECCAK_SPONGE_WORDS - md->sha3.capacity_words)) {
-         keccakf(md->sha3.s);
+         s_keccakf(md->sha3.s);
          md->sha3.word_index = 0;
       }
    }
@@ -318,14 +312,14 @@ int sha3_process(hash_state *md, const unsigned char *in, unsigned long inlen)
 #ifdef LTC_SHA3
 int sha3_done(hash_state *md, unsigned char *out)
 {
-   return _done(md, out, CONST64(0x06));
+   return ss_done(md, out, CONST64(0x06));
 }
 #endif
 
 #ifdef LTC_KECCAK
 int keccak_done(hash_state *md, unsigned char *out)
 {
-   return _done(md, out, CONST64(0x01));
+   return ss_done(md, out, CONST64(0x01));
 }
 #endif
 
@@ -344,7 +338,7 @@ int sha3_shake_done(hash_state *md, unsigned char *out, unsigned long outlen)
       /* shake_xof operation must be done only once */
       md->sha3.s[md->sha3.word_index] ^= (md->sha3.saved ^ (CONST64(0x1F) << (md->sha3.byte_index * 8)));
       md->sha3.s[SHA3_KECCAK_SPONGE_WORDS - md->sha3.capacity_words - 1] ^= CONST64(0x8000000000000000);
-      keccakf(md->sha3.s);
+      s_keccakf(md->sha3.s);
       /* store sha3.s[] as little-endian bytes into sha3.sb */
       for(i = 0; i < SHA3_KECCAK_SPONGE_WORDS; i++) {
          STORE64L(md->sha3.s[i], md->sha3.sb + i * 8);
@@ -355,7 +349,7 @@ int sha3_shake_done(hash_state *md, unsigned char *out, unsigned long outlen)
 
    for (idx = 0; idx < outlen; idx++) {
       if(md->sha3.byte_index >= (SHA3_KECCAK_SPONGE_WORDS - md->sha3.capacity_words) * 8) {
-         keccakf(md->sha3.s);
+         s_keccakf(md->sha3.s);
          /* store sha3.s[] as little-endian bytes into sha3.sb */
          for(i = 0; i < SHA3_KECCAK_SPONGE_WORDS; i++) {
             STORE64L(md->sha3.s[i], md->sha3.sb + i * 8);
@@ -382,7 +376,3 @@ int sha3_shake_memory(int num, const unsigned char *in, unsigned long inlen, uns
 #endif
 
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 /**
    @file saferp.c
@@ -15,7 +9,7 @@
 
 #ifdef LTC_SAFERP
 
-#define __LTC_SAFER_TAB_C__
+#define LTC_SAFER_TAB_C
 #include "safer_tab.c"
 
 const struct ltc_cipher_descriptor saferp_desc =
@@ -143,37 +137,37 @@ const struct ltc_cipher_descriptor saferp_desc =
 
 #ifdef LTC_SMALL_CODE
 
-static void _round(unsigned char *b, int i, const symmetric_key *skey)
+static void s_round(unsigned char *b, int i, const symmetric_key *skey)
 {
    ROUND(b, i);
 }
 
-static void _iround(unsigned char *b, int i, const symmetric_key *skey)
+static void s_iround(unsigned char *b, int i, const symmetric_key *skey)
 {
    iROUND(b, i);
 }
 
-static void _lt(unsigned char *b, unsigned char *b2)
+static void s_lt(unsigned char *b, unsigned char *b2)
 {
    LT(b, b2);
 }
 
-static void _ilt(unsigned char *b, unsigned char *b2)
+static void s_ilt(unsigned char *b, unsigned char *b2)
 {
    iLT(b, b2);
 }
 
 #undef ROUND
-#define ROUND(b, i) _round(b, i, skey)
+#define ROUND(b, i) s_round(b, i, skey)
 
 #undef iROUND
-#define iROUND(b, i) _iround(b, i, skey)
+#define iROUND(b, i) s_iround(b, i, skey)
 
 #undef LT
-#define LT(b, b2) _lt(b, b2)
+#define LT(b, b2) s_lt(b, b2)
 
 #undef iLT
-#define iLT(b, b2) _ilt(b, b2)
+#define iLT(b, b2) s_ilt(b, b2)
 
 #endif
 
@@ -347,6 +341,10 @@ int saferp_ecb_encrypt(const unsigned char *pt, unsigned char *ct, const symmetr
    LTC_ARGCHK(ct   != NULL);
    LTC_ARGCHK(skey != NULL);
 
+   if (skey->saferp.rounds < 8 || skey->saferp.rounds > 16) {
+       return CRYPT_INVALID_ROUNDS;
+   }
+
    /* do eight rounds */
    for (x = 0; x < 16; x++) {
        b[x] = pt[x];
@@ -410,6 +408,10 @@ int saferp_ecb_decrypt(const unsigned char *ct, unsigned char *pt, const symmetr
    LTC_ARGCHK(pt   != NULL);
    LTC_ARGCHK(ct   != NULL);
    LTC_ARGCHK(skey != NULL);
+
+   if (skey->saferp.rounds < 8 || skey->saferp.rounds > 16) {
+       return CRYPT_INVALID_ROUNDS;
+   }
 
    /* do eight rounds */
    b[0] = ct[0] ^ skey->saferp.K[skey->saferp.rounds*2][0];
@@ -563,7 +565,3 @@ int saferp_keysize(int *keysize)
 #endif
 
 
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

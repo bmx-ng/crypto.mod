@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 /*******************************************************************************
 *
@@ -30,7 +24,7 @@
 
 #ifdef LTC_SAFER
 
-#define __LTC_SAFER_TAB_C__
+#define LTC_SAFER_TAB_C
 #include "safer_tab.c"
 
 const struct ltc_cipher_descriptor safer_k64_desc = {
@@ -97,13 +91,13 @@ const struct ltc_cipher_descriptor safer_k64_desc = {
 /******************* Types ****************************************************/
 
 #ifdef LTC_CLEAN_STACK
-static void _Safer_Expand_Userkey(const unsigned char *userkey_1,
+static void s_safer_expand_userkey(const unsigned char *userkey_1,
                                  const unsigned char *userkey_2,
                                  unsigned int nof_rounds,
                                  int strengthened,
                                  safer_key_t key)
 #else
-static void Safer_Expand_Userkey(const unsigned char *userkey_1,
+static void safer_expand_userkey(const unsigned char *userkey_1,
                                  const unsigned char *userkey_2,
                                  unsigned int nof_rounds,
                                  int strengthened,
@@ -166,13 +160,13 @@ static void Safer_Expand_Userkey(const unsigned char *userkey_1,
 }
 
 #ifdef LTC_CLEAN_STACK
-static void Safer_Expand_Userkey(const unsigned char *userkey_1,
+static void safer_expand_userkey(const unsigned char *userkey_1,
                                  const unsigned char *userkey_2,
                                  unsigned int nof_rounds,
                                  int strengthened,
                                  safer_key_t key)
 {
-   _Safer_Expand_Userkey(userkey_1, userkey_2, nof_rounds, strengthened, key);
+   s_safer_expand_userkey(userkey_1, userkey_2, nof_rounds, strengthened, key);
    burn_stack(sizeof(unsigned char) * (2 * (LTC_SAFER_BLOCK_LEN + 1)) + sizeof(unsigned int)*2);
 }
 #endif
@@ -190,7 +184,7 @@ int safer_k64_setup(const unsigned char *key, int keylen, int num_rounds, symmet
       return CRYPT_INVALID_KEYSIZE;
    }
 
-   Safer_Expand_Userkey(key, key, (unsigned int)(num_rounds != 0 ?num_rounds:LTC_SAFER_K64_DEFAULT_NOF_ROUNDS), 0, skey->safer.key);
+   safer_expand_userkey(key, key, (unsigned int)(num_rounds != 0 ?num_rounds:LTC_SAFER_K64_DEFAULT_NOF_ROUNDS), 0, skey->safer.key);
    return CRYPT_OK;
 }
 
@@ -207,7 +201,7 @@ int safer_sk64_setup(const unsigned char *key, int keylen, int num_rounds, symme
       return CRYPT_INVALID_KEYSIZE;
    }
 
-   Safer_Expand_Userkey(key, key, (unsigned int)(num_rounds != 0 ?num_rounds:LTC_SAFER_SK64_DEFAULT_NOF_ROUNDS), 1, skey->safer.key);
+   safer_expand_userkey(key, key, (unsigned int)(num_rounds != 0 ?num_rounds:LTC_SAFER_SK64_DEFAULT_NOF_ROUNDS), 1, skey->safer.key);
    return CRYPT_OK;
 }
 
@@ -224,7 +218,7 @@ int safer_k128_setup(const unsigned char *key, int keylen, int num_rounds, symme
       return CRYPT_INVALID_KEYSIZE;
    }
 
-   Safer_Expand_Userkey(key, key+8, (unsigned int)(num_rounds != 0 ?num_rounds:LTC_SAFER_K128_DEFAULT_NOF_ROUNDS), 0, skey->safer.key);
+   safer_expand_userkey(key, key+8, (unsigned int)(num_rounds != 0 ?num_rounds:LTC_SAFER_K128_DEFAULT_NOF_ROUNDS), 0, skey->safer.key);
    return CRYPT_OK;
 }
 
@@ -241,12 +235,12 @@ int safer_sk128_setup(const unsigned char *key, int keylen, int num_rounds, symm
       return CRYPT_INVALID_KEYSIZE;
    }
 
-   Safer_Expand_Userkey(key, key+8, (unsigned int)(num_rounds != 0?num_rounds:LTC_SAFER_SK128_DEFAULT_NOF_ROUNDS), 1, skey->safer.key);
+   safer_expand_userkey(key, key+8, (unsigned int)(num_rounds != 0?num_rounds:LTC_SAFER_SK128_DEFAULT_NOF_ROUNDS), 1, skey->safer.key);
    return CRYPT_OK;
 }
 
 #ifdef LTC_CLEAN_STACK
-static int _safer_ecb_encrypt(const unsigned char *pt,
+static int s_safer_ecb_encrypt(const unsigned char *pt,
                              unsigned char *ct,
                              const symmetric_key *skey)
 #else
@@ -293,14 +287,14 @@ int safer_ecb_encrypt(const unsigned char *pt,
                              unsigned char *ct,
                              const symmetric_key *skey)
 {
-    int err = _safer_ecb_encrypt(pt, ct, skey);
+    int err = s_safer_ecb_encrypt(pt, ct, skey);
     burn_stack(sizeof(unsigned char) * 9 + sizeof(unsigned int) + sizeof(unsigned char *));
     return err;
 }
 #endif
 
 #ifdef LTC_CLEAN_STACK
-static int _safer_ecb_decrypt(const unsigned char *ct,
+static int s_safer_ecb_decrypt(const unsigned char *ct,
                              unsigned char *pt,
                              const symmetric_key *skey)
 #else
@@ -348,7 +342,7 @@ int safer_ecb_decrypt(const unsigned char *ct,
                              unsigned char *pt,
                              const symmetric_key *skey)
 {
-    int err = _safer_ecb_decrypt(ct, pt, skey);
+    int err = s_safer_ecb_decrypt(ct, pt, skey);
     burn_stack(sizeof(unsigned char) * 9 + sizeof(unsigned int) + sizeof(unsigned char *));
     return err;
 }
@@ -488,7 +482,3 @@ int safer_sk128_test(void)
 
 
 
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

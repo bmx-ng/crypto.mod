@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 /**
    @param sha512_256.c
    SHA512/256 hash included in sha512.c
@@ -113,7 +107,7 @@ int  sha512_256_test(void)
 
   for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
       sha512_256_init(&md);
-      sha512_256_process(&md, (unsigned char*)tests[i].msg, (unsigned long)strlen(tests[i].msg));
+      sha512_256_process(&md, (unsigned char*)tests[i].msg, (unsigned long)XSTRLEN(tests[i].msg));
       sha512_256_done(&md, tmp);
       if (compare_testvector(tmp, sizeof(tmp), tests[i].hash, sizeof(tests[i].hash), "SHA512-265", i)) {
          return CRYPT_FAIL_TESTVECTOR;
@@ -124,7 +118,3 @@ int  sha512_256_test(void)
 }
 
 #endif /* defined(LTC_SHA384) && defined(LTC_SHA512) */
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

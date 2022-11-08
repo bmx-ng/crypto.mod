@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -33,7 +33,7 @@ Import "glue.c"
 
 Extern
 
-		Function bmx_crypto_ctr_start:Byte Ptr(index:Int, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int, counterMode:Int, res:Int Var)
+		Function bmx_crypto_ctr_start:Byte Ptr(index:Int, iv:Byte Ptr, key:Byte Ptr, keylen:Int, numRounds:Int, counterMode:ECTRCounterMode, res:Int Var)
 		Function bmx_crypto_ctr_encrypt:Int(handle:Byte Ptr, pt:Byte Ptr, ct:Byte Ptr, length:UInt)
 		Function bmx_crypto_ctr_decrypt:Int(handle:Byte Ptr, ct:Byte Ptr, pt:Byte Ptr, length:UInt)
 		Function bmx_crypto_ctr_getiv:Int(handle:Byte Ptr, IV:Byte Ptr, length:UInt Var)
@@ -41,3 +41,9 @@ Extern
 		Function bmx_crypto_ctr_done:Int(handle:Byte Ptr)
 		
 End Extern
+
+Enum ECTRCounterMode
+	LITTLE_ENDIAN = $0000
+	BIG_ENDIAN = $1000
+	RFC3686 = $2000
+End Enum

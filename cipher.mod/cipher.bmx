@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -33,16 +33,52 @@ Global _cipher_factories:TCipherFactory
 Public
 
 Rem
+bbdoc: Gets a cipher of the specified @name.
+about: A #TNoSuchAlgorithmException is thrown if the requested cipher is not available.
+End Rem
+Function GetCipher:TCipher(name:String)
+	Local c:TCipher = TCipher.Find(name)
+
+	If Not c Then
+		Throw New TNoSuchAlgorithmException("Cipher not available : " + name)
+	End If
+	Return c
+End Function
+
+Rem
+bbdoc: Gets a block cipher of the specified @name.
+about: A #TNoSuchAlgorithmException is thrown if the requested block cipher is not available.
+End Rem
+Function GetBlockCipher:TBlockCipher(name:String)
+	Local c:TBlockCipher = TBlockCipher(GetCipher(name))
+
+	If Not c Then
+		Throw New TNoSuchAlgorithmException("Block cipher not available : " + name)
+	End If
+	Return c
+End Function
+
+Rem
+bbdoc: Gets a stream cipher of the specified @name.
+about: A #TNoSuchAlgorithmException is thrown if the requested stream cipher is not available.
+End Rem
+Function GetStreamCipher:TStreamCipher(name:String)
+	Local c:TStreamCipher = TStreamCipher(GetCipher(name))
+
+	If Not c Then
+		Throw New TNoSuchAlgorithmException("Stream cipher not available : " + name)
+	End If
+	Return c
+End Function
+
+Rem
 bbdoc: Cipher base type.
 End Rem
 Type TCipher
 
+	Field keyPtr:Byte Ptr
 	Field index:Int
 	
-	Method New(index:Int)
-		Self.index = index
-	End Method
-
 	Rem
 	bbdoc: Returns a list of all registered ciphers.
 	End Rem
@@ -70,16 +106,80 @@ Type TCipher
 	End Function
 
 	Rem
-	bbdoc: Returns the appropriate key size for @size.
+	bbdoc: Determines the appropriate key size for @size.
+	returns: The appropriate key size, or -1 if the provided @size was not acceptable.
 	about: Rounds the input keysize @size down to the next appropriate key size for use with the cipher.
 	End Rem
 	Method KeySize:Int(size:Int) Abstract
-	
+
 	Rem
 	bbdoc: Returns the name of the cipher.
 	End Rem
 	Method Name:String() Abstract
 	
+	Rem
+	bbdoc: When you are finished with a cipher you can de–initialize it with the done method.
+	End Rem
+	Method Done() Abstract
+
+End Type
+
+Type TBlockCipher Extends TCipher
+
+	Method New(index:Int)
+		keyPtr = bmx_crypto_symmetric_key_new()
+		Self.index = index
+	End Method
+
+	Rem
+	bbdoc: The block size for this cipher.
+	End Rem
+	Method BlockSize:Int() Abstract
+	
+	Rem
+	bbdoc: Sets up the cipher to be used with a given number of @rounds and a given @key.
+	End Rem
+	Method Setup:Int(key:String, rounds:Int = 0) Abstract
+
+	Rem
+	bbdoc: Sets up the cipher to be used with a given number of @rounds and a given @key.
+	End Rem
+	Method Setup:Int(key:Byte[], rounds:Int = 0) Abstract
+
+	Rem
+	bbdoc: Sets up the cipher to be used with a given number of @rounds and a given key length.
+	End Rem
+	Method Setup:Int(key:Byte Ptr, keylen:Int, rounds:Int = 0) Abstract
+
+	Rem
+	bbdoc: Encrypts a single block of text, @pt, storing the result in the @ct buffer.
+	about: It is possible that the input and output buffer are the same buffer.
+	The size of the block can be determined with #BlockSize.
+	End Rem
+	Method Encrypt:Int(pt:Byte Ptr, ct:Byte Ptr) Abstract
+
+	Rem
+	bbdoc: Decrypts a single block of text, @ct, storing the result in the @pt buffer.
+	about: It is possible that the input and output buffer are the same buffer.
+	The size of the block can be determined with #BlockSize.
+	End Rem
+	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr) Abstract
+
+	Method Delete()
+		If keyPtr Then
+			bmx_crypto_symmetric_key_free(keyPtr)
+			keyPtr = Null
+		End If
+	End Method
+
+End Type
+
+Type TStreamCipher Extends TCipher
+
+	Method New(index:Int)
+		Self.index = index
+	End Method
+
 End Type
 
 Rem

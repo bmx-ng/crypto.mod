@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2019-2020 Bruce A Henderson
+  Copyright (C) 2019-2022 Bruce A Henderson
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -57,4 +57,12 @@ int bmx_crypto_findCipher(BBString * name) {
 	int res = find_cipher(n);
 	bbMemFree(n);
 	return res;
+}
+
+symmetric_key * bmx_crypto_symmetric_key_new() {
+	return (symmetric_key*)malloc(sizeof(symmetric_key));
+}
+
+void bmx_crypto_symmetric_key_free(symmetric_key * key) {
+	free(key);
 }

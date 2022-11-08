@@ -32,4 +32,9 @@ Extern
 	Function bmx_crypto_aes_register:Int()
 	Function bmx_crypto_aes_keysize:Int(key:Int)
 
+	Function rijndael_setup:Int(key:Byte Ptr, keylen:Int, rounds:Int, skey:Byte Ptr)
+	Function rijndael_ecb_encrypt:Int(pt:Byte Ptr, ct:Byte Ptr, skey:Byte Ptr)
+	Function rijndael_ecb_decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, skey:Byte Ptr)
+	Function rijndael_done(skey:Byte Ptr)
+		
 End Extern

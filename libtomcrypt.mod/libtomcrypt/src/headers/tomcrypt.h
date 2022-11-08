@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 #ifndef TOMCRYPT_H_
 #define TOMCRYPT_H_
@@ -19,7 +13,7 @@
 #include <limits.h>
 
 /* use configuration data */
-#include <tomcrypt_custom.h>
+#include "tomcrypt_custom.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,17 +75,17 @@ enum {
    CRYPT_HASH_OVERFLOW      /* Hash applied to too many bits */
 };
 
-#include <tomcrypt_cfg.h>
-#include <tomcrypt_macros.h>
-#include <tomcrypt_cipher.h>
-#include <tomcrypt_hash.h>
-#include <tomcrypt_mac.h>
-#include <tomcrypt_prng.h>
-#include <tomcrypt_pk.h>
-#include <tomcrypt_math.h>
-#include <tomcrypt_misc.h>
-#include <tomcrypt_argchk.h>
-#include <tomcrypt_pkcs.h>
+#include "tomcrypt_cfg.h"
+#include "tomcrypt_macros.h"
+#include "tomcrypt_cipher.h"
+#include "tomcrypt_hash.h"
+#include "tomcrypt_mac.h"
+#include "tomcrypt_prng.h"
+#include "tomcrypt_pk.h"
+#include "tomcrypt_math.h"
+#include "tomcrypt_misc.h"
+#include "tomcrypt_argchk.h"
+#include "tomcrypt_pkcs.h"
 
 #ifdef __cplusplus
    }
@@ -99,7 +93,3 @@ enum {
 
 #endif /* TOMCRYPT_H_ */
 
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

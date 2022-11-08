@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 #include "tomcrypt_private.h"
 
 /**
@@ -35,7 +29,7 @@
    @param openssl_compat   [in] Whether or not to grow the key to the buffer size ala OpenSSL
    @return CRYPT_OK if successful
 */
-static int _pkcs_5_alg1_common(const unsigned char *password,
+static int s_pkcs_5_alg1_common(const unsigned char *password,
                        unsigned long password_len,
                        const unsigned char *salt,
                        int iteration_count,  int hash_idx,
@@ -55,6 +49,10 @@ static int _pkcs_5_alg1_common(const unsigned char *password,
    LTC_ARGCHK(salt     != NULL);
    LTC_ARGCHK(out      != NULL);
    LTC_ARGCHK(outlen   != NULL);
+
+   if (iteration_count <= 0) {
+      return CRYPT_INVALID_ARG;
+   }
 
    /* test hash IDX */
    if ((err = hash_is_valid(hash_idx)) != CRYPT_OK) {
@@ -156,7 +154,7 @@ int pkcs_5_alg1(const unsigned char *password, unsigned long password_len,
                 int iteration_count,  int hash_idx,
                 unsigned char *out,   unsigned long *outlen)
 {
-   return _pkcs_5_alg1_common(password, password_len, salt, iteration_count,
+   return s_pkcs_5_alg1_common(password, password_len, salt, iteration_count,
                              hash_idx, out, outlen, 0);
 }
 
@@ -180,12 +178,8 @@ int pkcs_5_alg1_openssl(const unsigned char *password,
                         int iteration_count,  int hash_idx,
                         unsigned char *out,   unsigned long *outlen)
 {
-   return _pkcs_5_alg1_common(password, password_len, salt, iteration_count,
+   return s_pkcs_5_alg1_common(password, password_len, salt, iteration_count,
                              hash_idx, out, outlen, 1);
 }
 
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

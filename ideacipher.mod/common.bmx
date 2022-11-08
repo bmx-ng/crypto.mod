@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -32,4 +32,9 @@ Extern
 	Function bmx_crypto_idea_register:Int()
 	Function bmx_crypto_idea_keysize:Int(key:Int)
 
+	Function idea_setup:Int(key:Byte Ptr, keylen:Int, rounds:Int, skey:Byte Ptr)
+	Function idea_ecb_encrypt:Int(pt:Byte Ptr, ct:Byte Ptr, skey:Byte Ptr)
+	Function idea_ecb_decrypt:Int(ct:Byte Ptr, pt:Byte Ptr, skey:Byte Ptr)
+	Function idea_done(skey:Byte Ptr)
+		
 End Extern

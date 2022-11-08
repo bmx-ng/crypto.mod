@@ -32,7 +32,7 @@ Print "Encoded = " + TBase64.Encode(cbuf)
 Local buf:Byte[txt.length + 1]
 
 cipherMode.Start(cipher, iv, key, 32, 14, ECTRCounterMode.LITTLE_ENDIAN)
-cipherMode.Decrypt(cbuf, buf, txt.length)
+cipherMode.Decrypt(cbuf, buf, UInt(txt.length))
 cipherMode.Done()
 
 Print "Decoded = " + String.FromUTF8String(buf)

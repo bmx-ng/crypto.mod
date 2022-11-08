@@ -1,18 +1,12 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
  /**
     @file twofish_tab.c
     Twofish tables, Tom St Denis
  */
 #ifdef LTC_TWOFISH_TABLES
-#ifdef __LTC_TWOFISH_TAB_C__
+#ifdef LTC_TWOFISH_TAB_C
 
 /* pre generated 8x8 tables from the four 4x4s */
 static const unsigned char SBOX[2][256] = {
@@ -488,9 +482,5 @@ static const ulong32 rs_tab7[256] = {
 
 #endif /* LTC_TWOFISH_ALL_TABLES */
 
-#endif /* __LTC_TWOFISH_TAB_C__ */
+#endif /* LTC_TWOFISH_TAB_C */
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -36,7 +36,7 @@ Import "common.bmx"
 New TDESCipherFactory(bmx_crypto_des_register())
 New T3DESCipherFactory(bmx_crypto_3des_register())
 
-Type TDESCipher Extends TCipher
+Type TDESCipher Extends TBlockCipher
 
 	Method KeySize:Int(key:Int) Override
 		Return bmx_crypto_des_keysize(key)
@@ -46,9 +46,40 @@ Type TDESCipher Extends TCipher
 		Return "DES"
 	End Method
 
+	Method BlockSize:Int() Override
+		Return 8
+	End Method
+
+	Method Setup:Int(key:String, rounds:Int = 0) Override
+		Local s:Byte Ptr = key.ToUTF8String()
+		Local ret:Int = des_setup(s, Int(strlen_(s)), rounds, keyPtr)
+		MemFree(s)
+		Return ret
+	End Method
+
+	Method Setup:Int(key:Byte[], rounds:Int = 0) Override
+		Return des_setup(key, key.length, rounds, keyPtr)
+	End Method
+
+	Method Setup:Int(key:Byte Ptr, keylen:Int, rounds:Int = 0) Override
+		Return des_setup(key, keylen, rounds, keyPtr)
+	End Method
+
+	Method Encrypt:Int(pt:Byte Ptr, ct:Byte Ptr) Override
+		Return des_ecb_encrypt(pt, ct, keyPtr)
+	End Method
+
+	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr) Override
+		Return des_ecb_decrypt(ct, pt, keyPtr)		
+	End Method
+
+	Method Done() Override
+		des_done(keyPtr)
+	End Method
+
 End Type
 
-Type T3DESCipher Extends TCipher
+Type T3DESCipher Extends TBlockCipher
 
 	Method KeySize:Int(key:Int) Override
 		Return bmx_crypto_3des_keysize(key)
@@ -56,6 +87,37 @@ Type T3DESCipher Extends TCipher
 	
 	Method Name:String() Override
 		Return "3DES"
+	End Method
+
+	Method BlockSize:Int() Override
+		Return 8
+	End Method
+
+	Method Setup:Int(key:String, rounds:Int = 0) Override
+		Local s:Byte Ptr = key.ToUTF8String()
+		Local ret:Int = des3_setup(s, Int(strlen_(s)), rounds, keyPtr)
+		MemFree(s)
+		Return ret
+	End Method
+
+	Method Setup:Int(key:Byte[], rounds:Int = 0) Override
+		Return des3_setup(key, key.length, rounds, keyPtr)
+	End Method
+
+	Method Setup:Int(key:Byte Ptr, keylen:Int, rounds:Int = 0) Override
+		Return des3_setup(key, keylen, rounds, keyPtr)
+	End Method
+
+	Method Encrypt:Int(pt:Byte Ptr, ct:Byte Ptr) Override
+		Return des3_ecb_encrypt(pt, ct, keyPtr)
+	End Method
+
+	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr) Override
+		Return des3_ecb_decrypt(ct, pt, keyPtr)		
+	End Method
+
+	Method Done() Override
+		des3_done(keyPtr)
 	End Method
 
 End Type

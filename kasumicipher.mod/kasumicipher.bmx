@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -35,7 +35,7 @@ Import "common.bmx"
 
 New TKasumiCipherFactory(bmx_crypto_kasumi_register())
 
-Type TKasumiCipher Extends TCipher
+Type TKasumiCipher Extends TBlockCipher
 
 	Method KeySize:Int(key:Int) Override
 		Return bmx_crypto_kasumi_keysize(key)
@@ -43,6 +43,37 @@ Type TKasumiCipher Extends TCipher
 	
 	Method Name:String() Override
 		Return "kasumi"
+	End Method
+
+	Method BlockSize:Int() Override
+		Return 8
+	End Method
+
+	Method Setup:Int(key:String, rounds:Int = 0) Override
+		Local s:Byte Ptr = key.ToUTF8String()
+		Local ret:Int = kasumi_setup(s, Int(strlen_(s)), rounds, keyPtr)
+		MemFree(s)
+		Return ret
+	End Method
+
+	Method Setup:Int(key:Byte[], rounds:Int = 0) Override
+		Return kasumi_setup(key, key.length, rounds, keyPtr)
+	End Method
+
+	Method Setup:Int(key:Byte Ptr, keylen:Int, rounds:Int = 0) Override
+		Return kasumi_setup(key, keylen, rounds, keyPtr)
+	End Method
+
+	Method Encrypt:Int(pt:Byte Ptr, ct:Byte Ptr) Override
+		Return kasumi_ecb_encrypt(pt, ct, keyPtr)
+	End Method
+
+	Method Decrypt:Int(ct:Byte Ptr, pt:Byte Ptr) Override
+		Return kasumi_ecb_decrypt(ct, pt, keyPtr)		
+	End Method
+
+	Method Done() Override
+		kasumi_done(keyPtr)
 	End Method
 
 End Type

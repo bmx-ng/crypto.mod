@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 #include "tomcrypt_private.h"
 
 /**
@@ -127,6 +121,9 @@ const char *crypt_build_settings =
 #endif
 #if defined(LTC_SERPENT)
    "   Serpent\n"
+#endif
+#if defined(LTC_TEA)
+   "   TEA\n"
 #endif
    "Stream ciphers built-in:\n"
 #if defined(LTC_CHACHA)
@@ -431,6 +428,10 @@ const char *crypt_build_settings =
 #if defined(LTC_BASE16)
     " BASE16 "
 #endif
+#if defined(LTC_BCRYPT)
+    " BCRYPT "
+    " " NAME_VALUE(LTC_BCRYPT_DEFAULT_ROUNDS) " "
+#endif
 #if defined(LTC_CRC32)
     " CRC32 "
 #endif
@@ -514,7 +515,9 @@ const char *crypt_build_settings =
 #if defined(LTC_NO_ASM)
     " LTC_NO_ASM "
 #endif
-#if defined(LTC_ROx_ASM)
+#if defined(LTC_ROx_BUILTIN)
+    " LTC_ROx_BUILTIN "
+#elif defined(LTC_ROx_ASM)
     " LTC_ROx_ASM "
 #if defined(LTC_NO_ROLC)
     " LTC_NO_ROLC "
@@ -547,7 +550,3 @@ const char *crypt_build_settings =
     "\n"
     ;
 
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */

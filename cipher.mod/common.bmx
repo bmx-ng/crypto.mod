@@ -1,5 +1,5 @@
 '
-'  Copyright (C) 2019-2020 Bruce A Henderson
+'  Copyright (C) 2019-2022 Bruce A Henderson
 '
 '  This software is provided 'as-is', without any express or implied
 '  warranty.  In no event will the authors be held liable for any damages
@@ -20,6 +20,7 @@
 SuperStrict
 
 Import Crypto.libtomcrypt
+Import Crypto.PRNG
 Import pub.stdc
 
 Import "../libtomcrypt.mod/libtomcrypt/src/headers/*.h"
@@ -39,6 +40,8 @@ Import "../libtomcrypt.mod/libtomcrypt/src/misc/crypt/crypt_register_cipher.c"
 Import "../libtomcrypt.mod/libtomcrypt/src/misc/crypt/crypt_register_hash.c"
 Import "../libtomcrypt.mod/libtomcrypt/src/misc/crypt/crypt_sizes.c"
 Import "../libtomcrypt.mod/libtomcrypt/src/misc/crypt/crypt_unregister_cipher.c"
+Import "../libtomcrypt.mod/libtomcrypt/src/misc/padding/padding_pad.c"
+Import "../libtomcrypt.mod/libtomcrypt/src/misc/padding/padding_depad.c"
 
 
 Import "glue.c"
@@ -48,4 +51,9 @@ Extern
 	Function bmx_crypto_listCiphers:String[]()
 	Function bmx_crypto_findCipher:Int(name:String)
 	
+	Function bmx_crypto_symmetric_key_new:Byte Ptr()
+	Function bmx_crypto_symmetric_key_free(handle:Byte Ptr)
+
+	Function padding_pad:Int(data:Byte Ptr, length:ULongInt, paddedLength:ULongInt Var, mode:ULongInt)
+	Function padding_depad:Int(data:Byte Ptr, length:ULongInt Var, mode:ULongInt)
 End Extern

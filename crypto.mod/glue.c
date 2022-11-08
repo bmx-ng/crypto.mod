@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020 Bruce A Henderson
+ * Copyright (c) 2019-2022 Bruce A Henderson
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above

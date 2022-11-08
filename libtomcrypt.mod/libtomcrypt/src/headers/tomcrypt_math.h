@@ -1,11 +1,5 @@
-/* LibTomCrypt, modular cryptographic library -- Tom St Denis
- *
- * LibTomCrypt is a library that provides various cryptographic
- * algorithms in a highly modular and flexible manner.
- *
- * The library is free for all purposes without any express
- * guarantee it works.
- */
+/* LibTomCrypt, modular cryptographic library -- Tom St Denis */
+/* SPDX-License-Identifier: Unlicense */
 
 /** math functions **/
 
@@ -508,9 +502,9 @@ typedef struct {
 
 extern ltc_math_descriptor ltc_mp;
 
-int ltc_init_multi(void **a, ...);
-void ltc_deinit_multi(void *a, ...);
-void ltc_cleanup_multi(void **a, ...);
+int ltc_init_multi(void **a, ...) LTC_NULL_TERMINATED;
+void ltc_deinit_multi(void *a, ...) LTC_NULL_TERMINATED;
+void ltc_cleanup_multi(void **a, ...) LTC_NULL_TERMINATED;
 
 #ifdef LTM_DESC
 extern const ltc_math_descriptor ltm_desc;
@@ -523,7 +517,3 @@ extern const ltc_math_descriptor tfm_desc;
 #ifdef GMP_DESC
 extern const ltc_math_descriptor gmp_desc;
 #endif
-
-/* ref:         HEAD -> develop */
-/* git commit:  a1f6312416ef6cd183ee62db58b640dc2d7ec1f4 */
-/* commit time: 2019-09-04 13:44:47 +0200 */
