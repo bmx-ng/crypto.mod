@@ -179,6 +179,6 @@ Type TDigestRegister
 	returns: The message digest or #Null if one of the given name does not exist.
 	about: This method must be implemented by extending types.
 	End Rem
-	Method GeTDigest:TMessageDigest( name:String ) Abstract
+	Method GetDigest:TMessageDigest( name:String ) Abstract
 	
 End Type
