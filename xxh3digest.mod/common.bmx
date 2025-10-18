@@ -1,5 +1,5 @@
 ' 
-' Copyright (c) 2024 Bruce A Henderson
+' Copyright (c) 2024-2025 Bruce A Henderson
 ' 
 ' Redistribution and use in source and binary forms, with or without
 ' modification, are permitted provided that the following conditions are met:
@@ -40,5 +40,6 @@ Extern
 	Function bmx_digest_xxh3_update(handle:Byte Ptr, buf:Byte Ptr, length:Int)
 	Function bmx_digest_xxh3_finish(handle:Byte Ptr, out:Byte Ptr, size:Int)
 	Function bmx_digest_xxh3_finish_ulong(handle:Byte Ptr, out:ULong Var)
+	Function bmx_digest_xxh3_update_string(handle:Byte Ptr, txt:String)
 
 End Extern
