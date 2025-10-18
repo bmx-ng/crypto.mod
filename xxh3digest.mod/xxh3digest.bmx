@@ -1,5 +1,5 @@
 ' 
-' Copyright (c) 2024 Bruce A Henderson
+' Copyright (c) 2024-2025 Bruce A Henderson
 ' 
 ' Redistribution and use in source and binary forms, with or without
 ' modification, are permitted provided that the following conditions are met:
@@ -64,9 +64,12 @@ Type TXXH3Digest Extends TMessageDigest
 
 	Rem
 	bbdoc: Calculates the XXH3 hash for the given #String, setting the value in @result.
+	about: This is different to String's #HashCode method, which produces a 32-bit hash.
 	End Rem
 	Method Digest(txt:String, result:ULong Var)
-		result = txt.Hash() ' we already have a hash function for strings which uses XXH3
+		Reset() ' always reset before calculating a new hash
+		bmx_digest_xxh3_update_string(digestPtr, txt)
+		Finish(result)
 	End Method
 
 	Rem

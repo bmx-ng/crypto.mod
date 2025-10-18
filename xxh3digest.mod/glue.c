@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2024 Bruce A Henderson
+  Copyright (c) 2024-2025 Bruce A Henderson
   
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions are met:
@@ -40,6 +40,10 @@ void bmx_digest_xxh3_free(XXH3_state_t * state) {
 
 void bmx_digest_xxh3_update(XXH3_state_t * state, char * buf, int length) {
     XXH3_64bits_update(state, buf, length);
+}
+
+void bmx_digest_xxh3_update_string(XXH3_state_t * state, BBString * txt) {
+    XXH3_64bits_update(state, txt->buf, txt->length * sizeof(BBChar));
 }
 
 void bmx_digest_xxh3_finish(XXH3_state_t * state, char * out, int size) {
