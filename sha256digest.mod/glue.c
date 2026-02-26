@@ -31,7 +31,7 @@ int bmx_digest_sha256_process(hash_state * state, char * buf, int length) {
 }
 
 int bmx_digest_sha256_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = sha256_done(state, p);
 	sha256_init(state);

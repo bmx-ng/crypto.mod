@@ -31,7 +31,7 @@ int bmx_digest_sha512_process(hash_state * state, char * buf, int length) {
 }
 
 int bmx_digest_sha512_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = sha512_done(state, p);
 	sha512_init(state);

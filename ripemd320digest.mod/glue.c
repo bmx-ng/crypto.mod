@@ -31,7 +31,7 @@ int bmx_digest_rmd320_process(hash_state * state, char * buf, int length) {
 }
 
 int bmx_digest_rmd320_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = rmd320_done(state, p);
 	rmd320_init(state);
