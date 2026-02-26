@@ -31,7 +31,7 @@ hash_state * bmx_digest_blake2b_512_init() {
 }
 
 int bmx_digest_blake2b_512_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = blake2b_done(state, p);
 	blake2b_512_init(state);
@@ -45,7 +45,7 @@ hash_state * bmx_digest_blake2b_384_init() {
 }
 
 int bmx_digest_blake2b_384_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = blake2b_done(state, p);
 	blake2b_384_init(state);
@@ -59,7 +59,7 @@ hash_state * bmx_digest_blake2b_256_init() {
 }
 
 int bmx_digest_blake2b_256_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = blake2b_done(state, p);
 	blake2b_256_init(state);
@@ -73,7 +73,7 @@ hash_state * bmx_digest_blake2b_160_init() {
 }
 
 int bmx_digest_blake2b_160_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = blake2b_done(state, p);
 	blake2b_160_init(state);

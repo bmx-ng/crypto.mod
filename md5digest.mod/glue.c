@@ -31,7 +31,7 @@ int bmx_digest_md5_process(hash_state * state, char * buf, int length) {
 }
 
 int bmx_digest_md5_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = md5_done(state, p);
 	md5_init(state);

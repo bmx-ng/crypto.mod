@@ -31,7 +31,7 @@ int bmx_digest_rmd256_process(hash_state * state, char * buf, int length) {
 }
 
 int bmx_digest_rmd256_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = rmd256_done(state, p);
 	rmd256_init(state);

@@ -31,7 +31,7 @@ hash_state * bmx_digest_sha3_512_init() {
 }
 
 int bmx_digest_sha3_512_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = sha3_done(state, p);
 	sha3_512_init(state);
@@ -45,7 +45,7 @@ hash_state * bmx_digest_sha3_384_init() {
 }
 
 int bmx_digest_sha3_384_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = sha3_done(state, p);
 	sha3_384_init(state);
@@ -59,7 +59,7 @@ hash_state * bmx_digest_sha3_256_init() {
 }
 
 int bmx_digest_sha3_256_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = sha3_done(state, p);
 	sha3_256_init(state);
@@ -73,7 +73,7 @@ hash_state * bmx_digest_sha3_224_init() {
 }
 
 int bmx_digest_sha3_224_done(hash_state * state, BBArray * out) {
-	BBBYTE * p = (BBBYTE**)BBARRAYDATA(out, 1);
+	BBBYTE * p = (BBBYTE*)BBARRAYDATA(out, 1);
 
 	int res = sha3_done(state, p);
 	sha3_224_init(state);
