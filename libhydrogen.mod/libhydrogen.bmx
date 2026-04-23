@@ -1,5 +1,5 @@
 '
-' Copyright (c) 2019-2022 Bruce A Henderson
+' Copyright (c) 2019-2026 Bruce A Henderson
 '
 ' Permission to use, copy, modify, and/or distribute this software for any
 ' purpose with or without fee is hereby granted, provided that the above
@@ -19,11 +19,13 @@ SuperStrict
 Module Crypto.LibHydrogen
 
 
-ModuleInfo "Version: 1.02"
+ModuleInfo "Version: 1.03"
 ModuleInfo "Author: Frank Denis."
 ModuleInfo "License: ISC"
 ModuleInfo "Credit: Adapted for BlitzMax by Bruce A Henderson"
 
+ModuleInfo "History: 1.03"
+ModuleInfo "History: Updated to libhydrogen 1.0.0.f3ab14c"
 ModuleInfo "History: 1.02"
 ModuleInfo "History: Updated for haiku"
 ModuleInfo "History: 1.01"

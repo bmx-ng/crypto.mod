@@ -1,14 +1,23 @@
-sudo: false
-
 language: c
+sudo: false
+dist: bionic
+
+env:
+  - CFLAGS="-Wall -W -O"
 
 os:
- - linux
+  - linux
 
 compiler:
- - clang
- - gcc
- - g++
+  - clang
+  - gcc
+  - g++
+
+arch:
+  - arm64
+  - amd64
+  - s390x
+  - ppc64le
 
 addons:
   apt:
@@ -16,7 +25,7 @@ addons:
       - p7zip-full
 
 script:
- - make
- - make test
- - make clean
- - make -f Makefile.arduino package
+  - make
+  - make test
+  - make clean
+  - make -f Makefile.arduino package

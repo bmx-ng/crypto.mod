@@ -2,26 +2,26 @@ int
 hydro_hash_update(hydro_hash_state *state, const void *in_, size_t in_len)
 {
     const uint8_t *in  = (const uint8_t *) in_;
-    uint8_t *      buf = (uint8_t *) (void *) state->state;
+    uint8_t       *buf = (uint8_t *) (void *) state->state;
     size_t         left;
     size_t         ps;
     size_t         i;
 
     while (in_len > 0) {
-        if ((left = gimli_RATE - state->buf_off) == 0) {
-            gimli_core_u8(buf, 0);
-            state->buf_off = 0;
-            left           = gimli_RATE;
-        }
+        left = gimli_RATE - state->buf_off;
         if ((ps = in_len) > left) {
             ps = left;
         }
         for (i = 0; i < ps; i++) {
             buf[state->buf_off + i] ^= in[i];
         }
-        state->buf_off += (uint8_t) ps;
         in += ps;
         in_len -= ps;
+        state->buf_off += (uint8_t) ps;
+        if (state->buf_off == gimli_RATE) {
+            gimli_core_u8(buf, 0);
+            state->buf_off = 0;
+        }
     }
     return 0;
 }
@@ -43,10 +43,10 @@ hydro_hash_init(hydro_hash_state *state, const char ctx[hydro_hash_CONTEXTBYTES]
     if (key != NULL) {
         block[gimli_RATE] = (uint8_t) hydro_hash_KEYBYTES;
         memcpy(block + gimli_RATE + 1, key, hydro_hash_KEYBYTES);
-        p = (gimli_RATE + 1 + hydro_hash_KEYBYTES + (gimli_RATE - 1)) & ~(size_t)(gimli_RATE - 1);
+        p = (gimli_RATE + 1 + hydro_hash_KEYBYTES + (gimli_RATE - 1)) & ~(size_t) (gimli_RATE - 1);
     } else {
         block[gimli_RATE] = (uint8_t) 0;
-        p                 = (gimli_RATE + 1 + 0 + (gimli_RATE - 1)) & ~(size_t)(gimli_RATE - 1);
+        p                 = (gimli_RATE + 1 + 0 + (gimli_RATE - 1)) & ~(size_t) (gimli_RATE - 1);
     }
     mem_zero(state, sizeof *state);
     hydro_hash_update(state, block, p);
@@ -71,10 +71,10 @@ hydro_hash_init_with_tweak(hydro_hash_state *state, const char ctx[hydro_hash_CO
     if (key != NULL) {
         block[gimli_RATE] = (uint8_t) hydro_hash_KEYBYTES;
         memcpy(block + gimli_RATE + 1, key, hydro_hash_KEYBYTES);
-        p = (gimli_RATE + 1 + hydro_hash_KEYBYTES + (gimli_RATE - 1)) & ~(size_t)(gimli_RATE - 1);
+        p = (gimli_RATE + 1 + hydro_hash_KEYBYTES + (gimli_RATE - 1)) & ~(size_t) (gimli_RATE - 1);
     } else {
         block[gimli_RATE] = (uint8_t) 0;
-        p                 = (gimli_RATE + 1 + 0 + (gimli_RATE - 1)) & ~(size_t)(gimli_RATE - 1);
+        p                 = (gimli_RATE + 1 + 0 + (gimli_RATE - 1)) & ~(size_t) (gimli_RATE - 1);
     }
     block[p] = (uint8_t) sizeof tweak;
     STORE64_LE(&block[p + 1], tweak);
@@ -94,14 +94,16 @@ hydro_hash_final(hydro_hash_state *state, uint8_t *out, size_t out_len)
     size_t   lc_len;
     size_t   leftover;
 
-    if (out_len < hydro_hash_BYTES_MIN || out_len > hydro_hash_BYTES_MAX) {
+    if (out_len == 0) {
+        /* allow callers to finalize without producing output */
+    } else if (out_len < hydro_hash_BYTES_MIN || out_len > hydro_hash_BYTES_MAX || out == NULL) {
         return -1;
     }
     COMPILER_ASSERT(hydro_hash_BYTES_MAX <= 0xffff);
     lc[1]  = (uint8_t) out_len;
-    lc[2]  = (uint8_t)(out_len >> 8);
+    lc[2]  = (uint8_t) (out_len >> 8);
     lc[3]  = 0;
-    lc_len = (size_t)(1 + (lc[2] != 0));
+    lc_len = (size_t) (1 + (lc[2] != 0));
     lc[0]  = (uint8_t) lc_len;
     hydro_hash_update(state, lc, 1 + lc_len + 1);
     gimli_pad_u8(buf, state->buf_off, gimli_DOMAIN_XOF);
@@ -114,6 +116,8 @@ hydro_hash_final(hydro_hash_state *state, uint8_t *out, size_t out_len)
         gimli_core_u8(buf, 0);
         mem_cpy(out + i * gimli_RATE, buf, leftover);
     }
+    state->buf_off = gimli_RATE;
+
     return 0;
 }
 
@@ -122,7 +126,7 @@ hydro_hash_hash(uint8_t *out, size_t out_len, const void *in_, size_t in_len,
                 const char ctx[hydro_hash_CONTEXTBYTES], const uint8_t key[hydro_hash_KEYBYTES])
 {
     hydro_hash_state st;
-    const uint8_t *  in = (const uint8_t *) in_;
+    const uint8_t   *in = (const uint8_t *) in_;
 
     if (hydro_hash_init(&st, ctx, key) != 0 || hydro_hash_update(&st, in, in_len) != 0 ||
         hydro_hash_final(&st, out, out_len) != 0) {

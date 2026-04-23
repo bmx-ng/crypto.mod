@@ -1,3 +1,6 @@
+#ifdef NDEBUG
+#    undef NDEBUG
+#endif
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -78,9 +81,13 @@ test_hash(void)
     uint8_t          dk[hydro_random_SEEDBYTES];
     uint8_t          h[100];
     uint8_t          key[hydro_hash_KEYBYTES];
-    uint8_t          msg[1000];
-    char             hex[100 * 2 + 1];
-    size_t           i;
+#ifdef __TRUSTINSOFT_ANALYZER__
+    uint8_t msg[32];
+#else
+    uint8_t msg[1000];
+#endif
+    char   hex[100 * 2 + 1];
+    size_t i;
 
     memset(dk, 0, sizeof dk);
     hydro_random_buf_deterministic(key, sizeof key, dk);
@@ -93,21 +100,33 @@ test_hash(void)
     }
     hydro_hash_final(&st, h, sizeof h);
     hydro_bin2hex(hex, sizeof hex, h, sizeof h);
+#ifndef __TRUSTINSOFT_ANALYZER__
     assert_streq(
         "e5d2beb77a039965850ee76327e06b2fa6cb5121db8038b11bce4641a9c4bd843658104bdf07342570bb5fd1d7"
         "2c0d31a8981b47c718fddaffbd4171605c873cbaf921bb57988dd814f3a3fbef9799ff7c762705c4bf37ab2981"
         "5981bf0d8833d60afe14",
         hex);
+#endif
     hydro_hash_hash(h, sizeof h, msg, sizeof msg, ctx, key);
     hydro_bin2hex(hex, sizeof hex, h, sizeof h);
+#ifndef __TRUSTINSOFT_ANALYZER__
     assert_streq(
         "724bd8883df73320ffd70923cb997f9a99bc670c4d78887be4975add0099fbf489b266a85d1f56743062d60a05"
         "590cbce47e45108367879bf4641cbaefe584e8618cbeb8c230ae956da22c7c5c4f11a8804ca576ec20fa5da239"
         "dde3d03a6018383c21f5",
         hex);
+#endif
     hydro_hash_hash(h, hydro_hash_BYTES, msg, sizeof msg, ctx, key);
     hydro_bin2hex(hex, sizeof hex, h, hydro_hash_BYTES);
+#ifndef __TRUSTINSOFT_ANALYZER__
     assert_streq("7dfa45ce18210e2422fd658bf7beccb6e534e44f99ae359f4af3ba41af8ca463", hex);
+#endif
+    /* total input length is a multiple of the rate */
+    hydro_hash_hash(h, hydro_hash_BYTES, msg, 13, ctx, key);
+    hydro_bin2hex(hex, sizeof hex, h, hydro_hash_BYTES);
+#ifndef __TRUSTINSOFT_ANALYZER__
+    assert_streq("d57a9800549bb4bab6a06fa6e16e08aad68d7d4313fb69a81b9f5d5af375dbe7", hex);
+#endif
 }
 
 static void
@@ -233,7 +252,11 @@ test_kdf(void)
 static void
 test_sign(void)
 {
-    uint8_t            msg[500];
+#ifdef __TRUSTINSOFT_ANALYZER__
+    uint8_t msg[32];
+#else
+    uint8_t msg[500];
+#endif
     uint8_t            sig[hydro_sign_BYTES];
     hydro_sign_state   st;
     hydro_sign_keypair kp;
@@ -360,6 +383,36 @@ test_kx_xx(void)
 }
 
 static void
+test_kx_nk(void)
+{
+    hydro_kx_state           st_client;
+    hydro_kx_keypair         server_static_kp;
+    uint8_t                  psk[hydro_kx_PSKBYTES];
+    uint8_t                  packet1[hydro_kx_NK_PACKET1BYTES];
+    uint8_t                  packet2[hydro_kx_NK_PACKET2BYTES];
+    hydro_kx_session_keypair kp_client;
+    hydro_kx_session_keypair kp_server;
+
+    hydro_kx_keygen(&server_static_kp);
+
+    hydro_kx_nk_1(&st_client, packet1, NULL, server_static_kp.pk);
+    hydro_kx_nk_2(&kp_server, packet2, packet1, NULL, &server_static_kp);
+    hydro_kx_nk_3(&st_client, &kp_client, packet2);
+
+    assert(hydro_equal(kp_client.tx, kp_server.rx, hydro_kx_SESSIONKEYBYTES));
+    assert(hydro_equal(kp_client.rx, kp_server.tx, hydro_kx_SESSIONKEYBYTES));
+
+    hydro_random_buf(psk, sizeof psk);
+
+    hydro_kx_nk_1(&st_client, packet1, psk, server_static_kp.pk);
+    hydro_kx_nk_2(&kp_server, packet2, packet1, psk, &server_static_kp);
+    hydro_kx_nk_3(&st_client, &kp_client, packet2);
+
+    assert(hydro_equal(kp_client.tx, kp_server.rx, hydro_kx_SESSIONKEYBYTES));
+    assert(hydro_equal(kp_client.rx, kp_server.tx, hydro_kx_SESSIONKEYBYTES));
+}
+
+static void
 test_pwhash(void)
 {
     uint8_t            master_key[hydro_pwhash_MASTERKEYBYTES];
@@ -411,7 +464,7 @@ test_pwhash(void)
 int
 main(void)
 {
-#if defined(_WIN32)
+#ifdef _MSC_VER
     /*
      * On Windows, disable the "Abort - Retry - Ignore" GUI dialog that otherwise pops up on
      * assertion failure.
@@ -430,6 +483,7 @@ main(void)
     test_kx_n();
     test_kx_kk();
     test_kx_xx();
+    test_kx_nk();
     test_pwhash();
     test_randombytes();
     test_secretbox();
