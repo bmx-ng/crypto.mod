@@ -4,7 +4,7 @@ Import Crypto.Digest
 
 Import "blake3/*.h"
 Import "blake3/blake3.c"
-Import "blake3/blake3_dispatch.c"
+Import "dispatch.c"
 Import "blake3/blake3_portable.c"
 ?Not blake3_portable And x64 And win32
 Import "blake3/blake3_sse2_x86-64_windows_gnu.S"

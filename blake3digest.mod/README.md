@@ -70,8 +70,11 @@ compiled or run in this development environment. No universal qualification is
 claimed. The C implementation currently has no WASM SIMD backend.
 
 The SIMD C wrappers keep ISA flags local; the dispatcher and portable code are
-compiled for the baseline CPU. BMK invokes native assemblers without C
-preprocessing, so upstream's preprocessed Unix assembly is not imported.
+compiled for the baseline CPU. Runtime CPU detection prevents unsupported SIMD
+instructions from being executed. GCC 7 and older retain SSE/AVX2 dispatch but
+omit AVX-512 because those toolchains can emit assembly rejected by their GNU
+assembler. BMK invokes native assemblers without C preprocessing, so upstream's
+preprocessed Unix assembly is not imported.
 
 `-ud blake3_portable` disables all SIMD for testing or a smaller build. Changing
 user definitions requires rebuilding the module: `makeapp -a` alone does not
