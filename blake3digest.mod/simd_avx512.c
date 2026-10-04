@@ -1,4 +1,6 @@
 /* SPDX-License-Identifier: 0BSD */
+#include "compiler_compat.h"
+#if !BMX_BLAKE3_NO_AVX512
 #include <immintrin.h>
 #if defined(__clang__)
 #pragma clang attribute push(__attribute__((target("avx512f,avx512vl"))), apply_to = function)
@@ -11,4 +13,5 @@
 #pragma clang attribute pop
 #elif defined(__GNUC__)
 #pragma GCC pop_options
+#endif
 #endif
