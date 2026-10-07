@@ -207,7 +207,6 @@ Type TCryptoHash
 	End Function
 
 	Rem
-	Rem
 	bbdoc: Puts a fingerprint of the message @in into @out.
 	about: The output size can be chosen by the application.
 	The minimum recommended output size is #CRYPTO_HASH_BYTES. This size makes it practically impossible for
