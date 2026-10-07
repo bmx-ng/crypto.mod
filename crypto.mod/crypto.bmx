@@ -359,7 +359,6 @@ Type TCryptoSecretBox
 	End Function
 	
 	Rem
-	Rem
 	bbdoc: Encrypts a message @m using a @context, a secret @key and a message counter @msgId.
 	about: It puts the ciphertext whose length is @CRYPTO_SECRETBOX_HEADERBYTES + m.length into c.
 
