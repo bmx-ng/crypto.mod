@@ -207,7 +207,6 @@ Type TCryptoHash
 	End Function
 
 	Rem
-	Rem
 	bbdoc: Puts a fingerprint of the message @in into @out.
 	about: The output size can be chosen by the application.
 	The minimum recommended output size is #CRYPTO_HASH_BYTES. This size makes it practically impossible for
@@ -358,7 +357,6 @@ Type TCryptoSecretBox
 		Return bmx_hydro_secretbox_encrypt(c, m, mLen, msgId, context, key.key)
 	End Function
 	
-	Rem
 	Rem
 	bbdoc: Encrypts a message @m using a @context, a secret @key and a message counter @msgId.
 	about: It puts the ciphertext whose length is @CRYPTO_SECRETBOX_HEADERBYTES + m.length into c.
